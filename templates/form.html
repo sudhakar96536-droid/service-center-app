@@ -113,10 +113,15 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-    // Product search dropdown
+    // Select2 dropdown
     $('#product').select2({
         width: '100%',
         placeholder: "Search your product"
+    });
+
+    // FIX: clear validation when product selected
+    $('#product').on('change', function () {
+        this.setCustomValidity('');
     });
 
     // Uppercase auto
@@ -129,7 +134,7 @@
     // Set today's date
     document.getElementById("date").valueAsDate = new Date();
 
-    // Custom validation message
+    // General validation
     document.querySelectorAll("input, textarea, select").forEach(el => {
         el.addEventListener("invalid", function () {
             this.setCustomValidity("This field is mandatory");
@@ -138,9 +143,13 @@
         el.addEventListener("input", function () {
             this.setCustomValidity("");
         });
+
+        el.addEventListener("change", function () {
+            this.setCustomValidity("");
+        });
     });
 
-    // Mobile validation message
+    // Mobile validation
     const mobileField = document.querySelector('[name="mobile"]');
 
     mobileField.addEventListener("invalid", function () {
