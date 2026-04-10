@@ -13,10 +13,19 @@ def init_db():
         CREATE TABLE IF NOT EXISTS customers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             ref_number TEXT,
+            mobile TEXT,
             name TEXT,
-            phone TEXT,
+            address TEXT,
+            email TEXT,
+            gstin TEXT,
             product TEXT,
-            issue TEXT
+            qty INTEGER,
+            problem TEXT,
+            serial TEXT,
+            bill TEXT,
+            date DATE,
+            warranty TEXT
+            
         )
     ''')
     conn.commit()
@@ -33,21 +42,34 @@ def form():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    name = request.form['name'].upper()
-    phone = request.form['phone']
-    product = request.form['product']
-    issue = request.form['issue'].upper()
-
     ref_number = "REF-" + str(uuid.uuid4())[:8]
+
+    mobile = request.form['mobile']
+    name = request.form['name'].upper()
+    address = request.form['address'].upper()
+    email = request.form['email']
+    gstin = request.form['gstin'].upper()
+    product = request.form['product']
+    qty = request.form['qty']
+    problem = request.form['problem'].upper()
+    serial = request.form['serial'].upper()
+    bill = request.form['bill']
+    date = request.form['date']
+    warranty = request.form['warranty']
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute("INSERT INTO customers (ref_number, name, phone, product, issue) VALUES (?, ?, ?, ?, ?)",
-              (ref_number, name, phone, product, issue))
+
+    c.execute("""
+        INSERT INTO customers 
+        (ref_number, mobile, name, address, email, gstin, product, qty, problem, serial, bill, date, warranty)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (ref_number, mobile, name, address, email, gstin, product, qty, problem, serial, bill, date, warranty))
+
     conn.commit()
     conn.close()
 
-    return f"✅ Submitted successfully! Your Reference Number: <b>{ref_number}</b>"
+    return f"✅ Submitted! Your Ref Number: <b>{ref_number}</b>"
 
 @app.route('/admin')
 def admin():
