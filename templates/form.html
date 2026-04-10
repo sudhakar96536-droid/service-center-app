@@ -2,29 +2,52 @@
 <html>
 <head>
     <title>Service Request</title>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 </head>
+
 <body>
-    <h2>Service Request Form</h2>
 
-    <form action="/submit" method="POST">
-        <label>Name:</label><br>
-        <input type="text" name="name" required><br><br>
+<h2>Service Request Form</h2>
 
-        <label>Phone:</label><br>
-        <input type="text" name="phone" required><br><br>
+<form action="/submit" method="POST">
 
-<label>Product:</label><br>
-<select name="product" required>
-    <option value="">Select Product</option>
-    {% for p in products %}
-        <option value="{{p}}">{{p}}</option>
-    {% endfor %}
-</select><br><br>
+    <!-- Name -->
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
 
-        <label>Issue:</label><br>
-        <textarea name="issue" required></textarea><br><br>
+    <!-- Phone -->
+    <label>Phone:</label><br>
+    <input type="text" name="phone" required><br><br>
 
-        <button type="submit">Submit</button>
-    </form>
+    <!-- Product (Searchable) -->
+    <label>Product:</label><br>
+    <select name="product" id="product" style="width:300px" required>
+        <option value="">Search Product</option>
+        {% for p in products %}
+            <option value="{{p}}">{{p}}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <!-- Issue -->
+    <label>Issue:</label><br>
+    <textarea name="issue" required></textarea><br><br>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+    $('#product').select2({
+        placeholder: "Search your product",
+        allowClear: true
+    });
+</script>
+
 </body>
 </html>
