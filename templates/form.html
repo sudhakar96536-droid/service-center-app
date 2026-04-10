@@ -2,18 +2,13 @@
 <html>
 <head>
     <title>Service Request</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
-        body {
-            font-family: Arial;
-            background: #f5f5f5;
-        }
-
+        body { font-family: Arial; background: #f5f5f5; }
         .container {
             max-width: 600px;
             margin: auto;
@@ -23,7 +18,6 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px #ccc;
         }
-
         input, textarea, select {
             width: 100%;
             padding: 10px;
@@ -31,7 +25,6 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-
         button {
             width: 100%;
             padding: 12px;
@@ -41,71 +34,68 @@
             border-radius: 5px;
             font-size: 16px;
         }
-
-        button:hover {
-            background: darkgreen;
-        }
     </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>Service Request Form</h2>
+<h2>Service Request Form</h2>
 
-    <form action="/submit" method="POST">
+<form action="/submit" method="POST">
 
-        <!-- Mobile -->
-        <input type="tel" name="mobile" placeholder="Mobile Number"
-               pattern="[0-9]{10}" maxlength="10"
-               oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,10)"
-               required>
+<!-- Mobile -->
+<input type="tel" name="mobile"
+       placeholder="Mobile Number"
+       maxlength="10"
+       oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,10)"
+       required>
 
-        <!-- Name -->
-        <input type="text" name="name" class="upper" placeholder="Customer Name" required>
+<!-- Name -->
+<input type="text" name="name" class="upper nospecial" placeholder="Customer Name" required>
 
-        <!-- Address -->
-        <textarea name="address" class="upper" placeholder="Address" required></textarea>
+<!-- Address -->
+<textarea name="address" class="upper nospecial" placeholder="Address" required></textarea>
 
-        <!-- Email (optional) -->
-        <input type="email" name="email" placeholder="Email">
+<!-- Email (special allowed) -->
+<input type="email" name="email" placeholder="Email">
 
-        <!-- GSTIN (optional) -->
-        <input type="text" name="gstin" class="upper" placeholder="GSTIN">
+<!-- GSTIN -->
+<input type="text" name="gstin" class="upper nospecial" placeholder="GSTIN">
 
-        <!-- Product -->
-        <select name="product" id="product" required>
-            <option value="">Search Product</option>
-            {% for p in products %}
-                <option value="{{p}}">{{p}}</option>
-            {% endfor %}
-        </select>
+<!-- Product (special allowed) -->
+<select name="product" id="product" required>
+    <option value="">Search Product</option>
+    {% for p in products %}
+        <option value="{{p}}">{{p}}</option>
+    {% endfor %}
+</select>
 
-        <!-- Quantity -->
-        <input type="number" name="qty" value="1" min="1" required>
+<!-- Qty -->
+<input type="number" name="qty" value="1" min="1" required>
 
-        <!-- Problem -->
-        <textarea name="problem" class="upper" placeholder="Problem Description" required></textarea>
+<!-- Problem -->
+<textarea name="problem" class="upper nospecial" placeholder="Problem Description" required></textarea>
 
-        <!-- Serial -->
-        <input type="text" name="serial" class="upper" placeholder="Serial Number" required>
+<!-- Serial -->
+<input type="text" name="serial" class="upper nospecial" placeholder="Serial Number" required>
 
-        <!-- Bill -->
-        <input type="text" name="bill" placeholder="Bill Number" required>
+<!-- Bill (special allowed) -->
+<input type="text" name="bill" placeholder="Bill Number" required>
 
-        <!-- Date -->
-        <input type="date" name="date" id="date" required onkeydown="return false">
+<!-- Date -->
+<input type="date" name="date" id="date" required onkeydown="return false">
 
-        <!-- Warranty -->
-        <select name="warranty" required>
-            <option value="">Select Warranty</option>
-            <option value="IN">IN WARRANTY</option>
-            <option value="OUT">OUT OF WARRANTY</option>
-        </select>
+<!-- Warranty -->
+<select name="warranty" required>
+    <option value="">Select Warranty</option>
+    <option value="IN">IN WARRANTY</option>
+    <option value="OUT">OUT OF WARRANTY</option>
+</select>
 
-        <button type="submit">Submit</button>
+<button type="submit">Submit</button>
 
-    </form>
+</form>
 </div>
 
 <!-- JS -->
@@ -113,56 +103,63 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-    // Select2 dropdown
-    $('#product').select2({
-        width: '100%',
-        placeholder: "Search your product"
+// Select2
+$('#product').select2({
+    width: '100%',
+    placeholder: "Search your product"
+});
+
+// Fix validation
+$('#product').on('change', function () {
+    this.setCustomValidity('');
+});
+
+// Uppercase
+document.querySelectorAll('.upper').forEach(el => {
+    el.addEventListener('input', function () {
+        this.value = this.value.toUpperCase();
+    });
+});
+
+// ❌ Remove special characters (only letters + numbers + space)
+document.querySelectorAll('.nospecial').forEach(el => {
+    el.addEventListener('input', function () {
+        this.value = this.value.replace(/[^A-Z0-9 ]/gi, '');
+    });
+});
+
+// Date auto
+document.getElementById("date").valueAsDate = new Date();
+
+// Validation message
+document.querySelectorAll("input, textarea, select").forEach(el => {
+    el.addEventListener("invalid", function () {
+        this.setCustomValidity("This field is mandatory");
     });
 
-    // FIX: clear validation when product selected
-    $('#product').on('change', function () {
-        this.setCustomValidity('');
-    });
-
-    // Uppercase auto
-    document.querySelectorAll('.upper').forEach(el => {
-        el.addEventListener('input', function () {
-            this.value = this.value.toUpperCase();
-        });
-    });
-
-    // Set today's date
-    document.getElementById("date").valueAsDate = new Date();
-
-    // General validation
-    document.querySelectorAll("input, textarea, select").forEach(el => {
-        el.addEventListener("invalid", function () {
-            this.setCustomValidity("This field is mandatory");
-        });
-
-        el.addEventListener("input", function () {
-            this.setCustomValidity("");
-        });
-
-        el.addEventListener("change", function () {
-            this.setCustomValidity("");
-        });
-    });
-
-    // Mobile validation
-    const mobileField = document.querySelector('[name="mobile"]');
-
-    mobileField.addEventListener("invalid", function () {
-        if (this.value.length !== 10) {
-            this.setCustomValidity("Mobile number must be exactly 10 digits");
-        } else {
-            this.setCustomValidity("This field is mandatory");
-        }
-    });
-
-    mobileField.addEventListener("input", function () {
+    el.addEventListener("input", function () {
         this.setCustomValidity("");
     });
+
+    el.addEventListener("change", function () {
+        this.setCustomValidity("");
+    });
+});
+
+// Mobile validation
+const mobileField = document.querySelector('[name="mobile"]');
+
+mobileField.addEventListener("invalid", function () {
+    if (this.value.length !== 10) {
+        this.setCustomValidity("Mobile number must be exactly 10 digits");
+    } else {
+        this.setCustomValidity("This field is mandatory");
+    }
+});
+
+mobileField.addEventListener("input", function () {
+    this.setCustomValidity("");
+});
 </script>
 
 </body>
