@@ -1,1 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Service Request</title>
+</head>
+<body>
+    <h2>Service Request Form</h2>
 
+    <form action="/submit" method="POST">
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Phone:</label><br>
+        <input type="text" name="phone" required><br><br>
+
+        <label>Product:</label><br>
+        <input type="text" name="product" required><br><br>
+
+        <label>Issue:</label><br>
+        <textarea name="issue" required></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
