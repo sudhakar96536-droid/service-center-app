@@ -56,9 +56,9 @@
     <form action="/submit" method="POST">
 
         <!-- Mobile -->
-        <input type="text" name="mobile" placeholder="Mobile Number"
+        <input type="tel" name="mobile" placeholder="Mobile Number"
                pattern="[0-9]{10}" maxlength="10"
-               oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+               oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,10)"
                required>
 
         <!-- Name -->
@@ -113,7 +113,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-    // Select2 dropdown
+    // Product search dropdown
     $('#product').select2({
         width: '100%',
         placeholder: "Search your product"
@@ -126,7 +126,7 @@
         });
     });
 
-    // Set today date
+    // Set today's date
     document.getElementById("date").valueAsDate = new Date();
 
     // Custom validation message
@@ -138,6 +138,21 @@
         el.addEventListener("input", function () {
             this.setCustomValidity("");
         });
+    });
+
+    // Mobile validation message
+    const mobileField = document.querySelector('[name="mobile"]');
+
+    mobileField.addEventListener("invalid", function () {
+        if (this.value.length !== 10) {
+            this.setCustomValidity("Mobile number must be exactly 10 digits");
+        } else {
+            this.setCustomValidity("This field is mandatory");
+        }
+    });
+
+    mobileField.addEventListener("input", function () {
+        this.setCustomValidity("");
     });
 </script>
 
