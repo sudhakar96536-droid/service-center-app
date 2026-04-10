@@ -23,9 +23,15 @@
         input, textarea, select {
             width: 100%;
             padding: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 5px;
             border-radius: 5px;
             border: 1px solid #ccc;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-bottom: 10px;
         }
 
         button {
@@ -37,10 +43,6 @@
             border-radius: 5px;
             font-size: 16px;
         }
-
-        button:hover {
-            background: darkgreen;
-        }
     </style>
 </head>
 
@@ -49,56 +51,64 @@
 <div class="container">
 <h2>Service Request Form</h2>
 
-<form action="/submit" method="POST">
+<form id="myForm" action="/submit" method="POST">
 
 <!-- Mobile -->
-<input type="tel" name="mobile"
-       placeholder="Mobile Number"
-       maxlength="10"
-       oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,10)"
-       required>
+<input type="tel" name="mobile" id="mobile" placeholder="Mobile Number">
+<div class="error" id="mobileError"></div>
 
 <!-- Name -->
-<input type="text" name="name" class="upper nospecial" placeholder="Customer Name" required>
+<input type="text" name="name" id="name" placeholder="Customer Name">
+<div class="error" id="nameError"></div>
 
-<!-- Address (comma & dot allowed) -->
-<textarea name="address" class="upper address" placeholder="Address" required></textarea>
+<!-- Address -->
+<textarea name="address" id="address" placeholder="Address"></textarea>
+<div class="error" id="addressError"></div>
 
-<!-- Email (special allowed) -->
-<input type="email" name="email" placeholder="Email">
+<!-- Email -->
+<input type="email" name="email" id="email" placeholder="Email">
+<div class="error" id="emailError"></div>
 
 <!-- GSTIN -->
-<input type="text" name="gstin" class="upper nospecial" placeholder="GSTIN">
+<input type="text" name="gstin" id="gstin" placeholder="GSTIN">
+<div class="error" id="gstinError"></div>
 
 <!-- Product -->
-<select name="product" id="product" required>
+<select name="product" id="product">
     <option value="">Search Product</option>
     {% for p in products %}
         <option value="{{p}}">{{p}}</option>
     {% endfor %}
 </select>
+<div class="error" id="productError"></div>
 
-<!-- Quantity -->
-<input type="number" name="qty" value="1" min="1" required>
+<!-- Qty -->
+<input type="number" name="qty" id="qty" value="1" min="1">
+<div class="error" id="qtyError"></div>
 
 <!-- Problem -->
-<textarea name="problem" class="upper nospecial" placeholder="Problem Description" required></textarea>
+<textarea name="problem" id="problem" placeholder="Problem Description"></textarea>
+<div class="error" id="problemError"></div>
 
 <!-- Serial -->
-<input type="text" name="serial" class="upper nospecial" placeholder="Serial Number" required>
+<input type="text" name="serial" id="serial" placeholder="Serial Number">
+<div class="error" id="serialError"></div>
 
-<!-- Bill (special allowed) -->
-<input type="text" name="bill" placeholder="Bill Number" required>
+<!-- Bill -->
+<input type="text" name="bill" id="bill" placeholder="Bill Number">
+<div class="error" id="billError"></div>
 
 <!-- Date -->
-<input type="date" name="date" id="date" required onkeydown="return false">
+<input type="date" name="date" id="date">
+<div class="error" id="dateError"></div>
 
 <!-- Warranty -->
-<select name="warranty" required>
+<select name="warranty" id="warranty">
     <option value="">Select Warranty</option>
     <option value="IN">IN WARRANTY</option>
     <option value="OUT">OUT OF WARRANTY</option>
 </select>
+<div class="error" id="warrantyError"></div>
 
 <button type="submit">Submit</button>
 
@@ -111,72 +121,94 @@
 
 <script>
 // Select2
-$('#product').select2({
-    width: '100%',
-    placeholder: "Search your product"
-});
+$('#product').select2({ width: '100%' });
 
-// Fix Select2 validation issue
-$('#product').on('change', function () {
-    this.setCustomValidity('');
-});
+// Auto date
+document.getElementById("date").valueAsDate = new Date();
 
 // Uppercase
-document.querySelectorAll('.upper').forEach(el => {
-    el.addEventListener('input', function () {
+document.querySelectorAll("input, textarea").forEach(el => {
+    el.addEventListener("input", function () {
         this.value = this.value.toUpperCase();
     });
 });
 
-// ❌ No special characters (general fields)
-document.querySelectorAll('.nospecial').forEach(el => {
-    el.addEventListener('input', function () {
-        let val = this.value.toUpperCase();
-        val = val.replace(/[^A-Z0-9 ]/g, '');
-        this.value = val;
-    });
-});
+// Validation
+document.getElementById("myForm").addEventListener("submit", function(e){
 
-// ✅ Address allows comma & dot
-document.querySelectorAll('.address').forEach(el => {
-    el.addEventListener('input', function () {
-        let val = this.value.toUpperCase();
-        val = val.replace(/[^A-Z0-9 ,.\n]/g, '');
-        this.value = val;
-    });
-});
+    let valid = true;
 
-// Set today date
-document.getElementById("date").valueAsDate = new Date();
+    // Clear errors
+    document.querySelectorAll(".error").forEach(e => e.innerText="");
 
-// Validation messages
-document.querySelectorAll("input, textarea, select").forEach(el => {
-    el.addEventListener("invalid", function () {
-        this.setCustomValidity("This field is mandatory");
-    });
-
-    el.addEventListener("input", function () {
-        this.setCustomValidity("");
-    });
-
-    el.addEventListener("change", function () {
-        this.setCustomValidity("");
-    });
-});
-
-// Mobile validation
-const mobileField = document.querySelector('[name="mobile"]');
-
-mobileField.addEventListener("invalid", function () {
-    if (this.value.length !== 10) {
-        this.setCustomValidity("Mobile number must be exactly 10 digits");
-    } else {
-        this.setCustomValidity("This field is mandatory");
+    // Mobile
+    let mobile = document.getElementById("mobile").value;
+    if(!/^[0-9]{10}$/.test(mobile)){
+        document.getElementById("mobileError").innerText = "Enter valid 10 digit mobile number";
+        valid = false;
     }
-});
 
-mobileField.addEventListener("input", function () {
-    this.setCustomValidity("");
+    // Name (only letters)
+    let name = document.getElementById("name").value;
+    if(!/^[A-Z ]+$/.test(name)){
+        document.getElementById("nameError").innerText = "Name should contain only letters";
+        valid = false;
+    }
+
+    // Address
+    let address = document.getElementById("address").value;
+    if(!/^[A-Z0-9 ,.\n]+$/.test(address)){
+        document.getElementById("addressError").innerText = "Only letters, numbers, comma, dot allowed";
+        valid = false;
+    }
+
+    // Product
+    if(document.getElementById("product").value === ""){
+        document.getElementById("productError").innerText = "Please select product";
+        valid = false;
+    }
+
+    // Qty
+    if(document.getElementById("qty").value <= 0){
+        document.getElementById("qtyError").innerText = "Quantity must be greater than 0";
+        valid = false;
+    }
+
+    // Problem (only letters)
+    let problem = document.getElementById("problem").value;
+    if(!/^[A-Z ]+$/.test(problem)){
+        document.getElementById("problemError").innerText = "Only letters allowed";
+        valid = false;
+    }
+
+    // Serial
+    let serial = document.getElementById("serial").value;
+    if(!/^[A-Z0-9 ]+$/.test(serial)){
+        document.getElementById("serialError").innerText = "No special characters allowed";
+        valid = false;
+    }
+
+    // Bill (required)
+    if(document.getElementById("bill").value === ""){
+        document.getElementById("billError").innerText = "Bill is required";
+        valid = false;
+    }
+
+    // Date
+    if(document.getElementById("date").value === ""){
+        document.getElementById("dateError").innerText = "Select date";
+        valid = false;
+    }
+
+    // Warranty
+    if(document.getElementById("warranty").value === ""){
+        document.getElementById("warrantyError").innerText = "Select warranty";
+        valid = false;
+    }
+
+    if(!valid){
+        e.preventDefault();
+    }
 });
 </script>
 
