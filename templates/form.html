@@ -2,50 +2,25 @@
 <html>
 <head>
     <title>Service Request</title>
-
-    <!-- Mobile responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
-        body {
-            font-family: Arial;
-            background: #f5f5f5;
-        }
-
+        body { font-family: Arial; background: #f5f5f5; }
         .container {
-            max-width: 500px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px #ccc;
+            max-width: 600px; margin: auto; background: white;
+            padding: 20px; margin-top: 20px;
+            border-radius: 10px; box-shadow: 0px 0px 10px #ccc;
         }
-
         input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            width: 100%; padding: 10px; margin-bottom: 12px;
+            border-radius: 5px; border: 1px solid #ccc;
         }
-
         button {
-            width: 100%;
-            padding: 12px;
-            background: #28a745;
-            color: white;
-            border: none;
+            width: 100%; padding: 12px;
+            background: green; color: white; border: none;
             border-radius: 5px;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background: #218838;
         }
     </style>
 </head>
@@ -53,53 +28,55 @@
 <body>
 
 <div class="container">
-    <h2>Service Request Form</h2>
+<h2>Service Request Form</h2>
 
-    <form action="/submit" method="POST">
+<form action="/submit" method="POST">
 
-        <!-- Name -->
-        <label>Name:</label>
-        <input type="text" name="name" class="upper" required>
+<input type="text" name="mobile" placeholder="Mobile" required>
+<input type="text" name="name" class="upper" placeholder="Name" required>
+<textarea name="address" class="upper" placeholder="Address"></textarea>
 
-        <!-- Phone -->
-        <label>Phone:</label>
-        <input type="text" name="phone" required>
+<input type="email" name="email" placeholder="Email">
+<input type="text" name="gstin" class="upper" placeholder="GSTIN">
 
-        <!-- Product -->
-        <label>Product:</label>
-        <select name="product" id="product" required>
-            <option value="">Search Product</option>
-            {% for p in products %}
-                <option value="{{p}}">{{p}}</option>
-            {% endfor %}
-        </select>
+<select name="product" id="product" required>
+    <option value="">Search Product</option>
+    {% for p in products %}
+        <option value="{{p}}">{{p}}</option>
+    {% endfor %}
+</select>
 
-        <!-- Issue -->
-        <label>Issue:</label>
-        <textarea name="issue" class="upper" required></textarea>
+<input type="number" name="qty" placeholder="Quantity" value="1">
 
-        <button type="submit">Submit</button>
+<textarea name="problem" class="upper" placeholder="Problem" required></textarea>
 
-    </form>
+<input type="text" name="serial" class="upper" placeholder="Serial Number">
+<input type="text" name="bill" placeholder="Bill Number">
+
+<input type="date" name="date">
+
+<select name="warranty">
+    <option value="">Warranty</option>
+    <option value="IN">IN WARRANTY</option>
+    <option value="OUT">OUT OF WARRANTY</option>
+</select>
+
+<button type="submit">Submit</button>
+
+</form>
 </div>
 
-<!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-    // Select2 dropdown
-    $('#product').select2({
-        width: '100%',
-        placeholder: "Search your product"
-    });
+$('#product').select2({ width: '100%' });
 
-    // Auto uppercase
-    document.querySelectorAll('.upper').forEach(el => {
-        el.addEventListener('input', function() {
-            this.value = this.value.toUpperCase();
-        });
+document.querySelectorAll('.upper').forEach(el => {
+    el.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
     });
+});
 </script>
 
 </body>
