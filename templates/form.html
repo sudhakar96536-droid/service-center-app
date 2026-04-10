@@ -44,9 +44,7 @@
             font-size: 16px;
         }
 
-        h2 {
-            text-align: center;
-        }
+        h2 { text-align: center; }
     </style>
 </head>
 
@@ -54,11 +52,9 @@
 
 <div class="container">
 
-    <!-- ✅ LOGO -->
+    <!-- LOGO -->
     <div style="text-align:center; margin-bottom:10px;">
-        <img src="{{ url_for('static', filename='1logo.jpg') }}" 
-             alt="Logo" 
-             style="max-width:120px;">
+        <img src="{{ url_for('static', filename='1logo.jpg') }}" style="max-width:120px;">
     </div>
 
     <h2>Product Complaint Registration</h2>
@@ -66,24 +62,22 @@
 <form id="myForm" action="/submit" method="POST">
 
 <!-- Mobile -->
-<input type="tel" name="mobile" id="mobile" placeholder="Mobile Number">
+<input type="tel" id="mobile" name="mobile" placeholder="Mobile Number">
 <div class="error" id="mobileError"></div>
 
 <!-- Name -->
-<input type="text" name="name" id="name" placeholder="Customer Name">
+<input type="text" id="name" name="name" placeholder="Customer Name">
 <div class="error" id="nameError"></div>
 
 <!-- Address -->
-<textarea name="address" id="address" placeholder="Address"></textarea>
+<textarea id="address" name="address" placeholder="Address"></textarea>
 <div class="error" id="addressError"></div>
 
 <!-- Email -->
-<input type="email" name="email" id="email" placeholder="Email">
-<div class="error" id="emailError"></div>
+<input type="email" id="email" name="email" placeholder="Email">
 
 <!-- GSTIN -->
-<input type="text" name="gstin" id="gstin" placeholder="GSTIN">
-<div class="error" id="gstinError"></div>
+<input type="text" id="gstin" name="gstin" placeholder="GSTIN">
 
 <!-- Product -->
 <select name="product" id="product">
@@ -95,23 +89,25 @@
 <div class="error" id="productError"></div>
 
 <!-- Qty -->
-<input type="number" name="qty" id="qty" value="1" min="1">
+<input type="number" id="qty" name="qty" value="1" min="1">
 <div class="error" id="qtyError"></div>
 
 <!-- Problem -->
-<textarea name="problem" id="problem" placeholder="Problem Description"></textarea>
+<textarea id="problem" name="problem" placeholder="Problem Description"></textarea>
 <div class="error" id="problemError"></div>
 
 <!-- Serial -->
-<input type="text" name="serial" id="serial" placeholder="Serial Number">
+<input type="text" id="serial" name="serial" placeholder="Serial Number">
 <div class="error" id="serialError"></div>
 
 <!-- Bill -->
-<input type="text" name="bill" id="bill" placeholder="Bill Number">
+<input type="text" id="bill" name="bill" placeholder="Bill Number">
 <div class="error" id="billError"></div>
 
-<!-- Date -->
+<!-- ✅ BILL DATE FIX -->
+<label style="font-weight:bold;">Bill Date (Purchase Date):</label>
 <input type="date" name="date" id="date">
+<small style="color:gray;">Select the date from your purchase bill</small>
 <div class="error" id="dateError"></div>
 
 <!-- Warranty -->
@@ -141,9 +137,6 @@
 
 // Select2
 $('#product').select2({ width: '100%' });
-
-// Date auto
-document.getElementById("date").valueAsDate = new Date();
 
 // Uppercase
 document.querySelectorAll("input, textarea").forEach(el => {
@@ -189,6 +182,12 @@ document.getElementById("myForm").addEventListener("submit", function(e){
     let problem = document.getElementById("problem").value;
     if(!/^[A-Z ]+$/.test(problem)){
         document.getElementById("problemError").innerText = "Only letters allowed";
+        valid = false;
+    }
+
+    // Date
+    if(document.getElementById("date").value === ""){
+        document.getElementById("dateError").innerText = "Select bill date";
         valid = false;
     }
 
