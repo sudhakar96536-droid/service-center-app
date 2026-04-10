@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 import uuid
+import json
 
 app = Flask(__name__)
 
@@ -25,7 +26,10 @@ init_db()
 
 @app.route('/')
 def form():
-    return render_template('form.html')
+    with open('products.json') as f:
+        products = json.load(f)
+
+    return render_template('form.html', products=products)
 
 @app.route('/submit', methods=['POST'])
 def submit():
