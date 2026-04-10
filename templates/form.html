@@ -3,49 +3,102 @@
 <head>
     <title>Service Request</title>
 
+    <!-- Mobile responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+    </style>
 </head>
 
 <body>
 
-<h2>Service Request Form</h2>
+<div class="container">
+    <h2>Service Request Form</h2>
 
-<form action="/submit" method="POST">
+    <form action="/submit" method="POST">
 
-    <!-- Name -->
-    <label>Name:</label><br>
-    <input type="text" name="name" required><br><br>
+        <!-- Name -->
+        <label>Name:</label>
+        <input type="text" name="name" class="upper" required>
 
-    <!-- Phone -->
-    <label>Phone:</label><br>
-    <input type="text" name="phone" required><br><br>
+        <!-- Phone -->
+        <label>Phone:</label>
+        <input type="text" name="phone" required>
 
-    <!-- Product (Searchable) -->
-    <label>Product:</label><br>
-    <select name="product" id="product" style="width:300px" required>
-        <option value="">Search Product</option>
-        {% for p in products %}
-            <option value="{{p}}">{{p}}</option>
-        {% endfor %}
-    </select><br><br>
+        <!-- Product -->
+        <label>Product:</label>
+        <select name="product" id="product" required>
+            <option value="">Search Product</option>
+            {% for p in products %}
+                <option value="{{p}}">{{p}}</option>
+            {% endfor %}
+        </select>
 
-    <!-- Issue -->
-    <label>Issue:</label><br>
-    <textarea name="issue" required></textarea><br><br>
+        <!-- Issue -->
+        <label>Issue:</label>
+        <textarea name="issue" class="upper" required></textarea>
 
-    <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
 
-</form>
+    </form>
+</div>
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
+    // Select2 dropdown
     $('#product').select2({
-        placeholder: "Search your product",
-        allowClear: true
+        width: '100%',
+        placeholder: "Search your product"
+    });
+
+    // Auto uppercase
+    document.querySelectorAll('.upper').forEach(el => {
+        el.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
     });
 </script>
 
