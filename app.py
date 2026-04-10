@@ -79,11 +79,77 @@ def admin():
     data = c.fetchall()
     conn.close()
 
-    output = "<h2>Customer Entries</h2>"
-    for row in data:
-        output += f"<p>{row}</p>"
+    html = """
+    <html>
+    <head>
+        <title>Admin Panel</title>
+        <style>
+            body { font-family: Arial; background: #f5f5f5; padding:20px; }
+            h2 { text-align:center; }
 
-    return output
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                background: white;
+                font-size: 14px;
+            }
+
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            th {
+                background: #28a745;
+                color: white;
+            }
+
+            tr:nth-child(even) {
+                background: #f2f2f2;
+            }
+
+            tr:hover {
+                background: #ddd;
+            }
+        </style>
+    </head>
+    <body>
+
+    <h2>Customer Records</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Ref No</th>
+            <th>Mobile</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>GSTIN</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Problem</th>
+            <th>Serial</th>
+            <th>Bill</th>
+            <th>Date</th>
+            <th>Warranty</th>
+        </tr>
+    """
+
+    for row in data:
+        html += "<tr>"
+        for col in row:
+            html += f"<td>{col}</td>"
+        html += "</tr>"
+
+    html += """
+    </table>
+    </body>
+    </html>
+    """
+
+    return html
 
 if __name__ == '__main__':
     app.run(debug=True)
