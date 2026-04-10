@@ -2,25 +2,49 @@
 <html>
 <head>
     <title>Service Request</title>
+
+    <!-- Mobile responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
-        body { font-family: Arial; background: #f5f5f5; }
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+        }
+
         .container {
-            max-width: 600px; margin: auto; background: white;
-            padding: 20px; margin-top: 20px;
-            border-radius: 10px; box-shadow: 0px 0px 10px #ccc;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
         }
+
         input, textarea, select {
-            width: 100%; padding: 10px; margin-bottom: 12px;
-            border-radius: 5px; border: 1px solid #ccc;
-        }
-        button {
-            width: 100%; padding: 12px;
-            background: green; color: white; border: none;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
             border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: darkgreen;
         }
     </style>
 </head>
@@ -28,55 +52,80 @@
 <body>
 
 <div class="container">
-<h2>Service Request Form</h2>
+    <h2>Service Request Form</h2>
 
-<form action="/submit" method="POST">
+    <form action="/submit" method="POST">
 
-<input type="text" name="mobile" placeholder="Mobile" required>
-<input type="text" name="name" class="upper" placeholder="Name" required>
-<textarea name="address" class="upper" placeholder="Address"></textarea>
+        <!-- Mobile -->
+        <input type="text" name="mobile" placeholder="Mobile Number" required>
 
-<input type="email" name="email" placeholder="Email">
-<input type="text" name="gstin" class="upper" placeholder="GSTIN">
+        <!-- Name -->
+        <input type="text" name="name" class="upper" placeholder="Customer Name" required>
 
-<select name="product" id="product" required>
-    <option value="">Search Product</option>
-    {% for p in products %}
-        <option value="{{p}}">{{p}}</option>
-    {% endfor %}
-</select>
+        <!-- Address -->
+        <textarea name="address" class="upper" placeholder="Address"></textarea>
 
-<input type="number" name="qty" placeholder="Quantity" value="1">
+        <!-- Email -->
+        <input type="email" name="email" placeholder="Email">
 
-<textarea name="problem" class="upper" placeholder="Problem" required></textarea>
+        <!-- GSTIN -->
+        <input type="text" name="gstin" class="upper" placeholder="GSTIN">
 
-<input type="text" name="serial" class="upper" placeholder="Serial Number">
-<input type="text" name="bill" placeholder="Bill Number">
+        <!-- Product -->
+        <select name="product" id="product" required>
+            <option value="">Search Product</option>
+            {% for p in products %}
+                <option value="{{p}}">{{p}}</option>
+            {% endfor %}
+        </select>
 
-<input type="date" name="date">
+        <!-- Quantity -->
+        <input type="number" name="qty" value="1" min="1" placeholder="Quantity">
 
-<select name="warranty">
-    <option value="">Warranty</option>
-    <option value="IN">IN WARRANTY</option>
-    <option value="OUT">OUT OF WARRANTY</option>
-</select>
+        <!-- Problem -->
+        <textarea name="problem" class="upper" placeholder="Problem Description" required></textarea>
 
-<button type="submit">Submit</button>
+        <!-- Serial -->
+        <input type="text" name="serial" class="upper" placeholder="Serial Number">
 
-</form>
+        <!-- Bill -->
+        <input type="text" name="bill" placeholder="Bill Number">
+
+        <!-- Date -->
+        <input type="date" name="date" id="date" required onkeydown="return false">
+
+        <!-- Warranty -->
+        <select name="warranty">
+            <option value="">Warranty</option>
+            <option value="IN">IN WARRANTY</option>
+            <option value="OUT">OUT OF WARRANTY</option>
+        </select>
+
+        <button type="submit">Submit</button>
+
+    </form>
 </div>
 
+<!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-$('#product').select2({ width: '100%' });
-
-document.querySelectorAll('.upper').forEach(el => {
-    el.addEventListener('input', function() {
-        this.value = this.value.toUpperCase();
+    // Product search dropdown
+    $('#product').select2({
+        width: '100%',
+        placeholder: "Search your product"
     });
-});
+
+    // Auto uppercase
+    document.querySelectorAll('.upper').forEach(el => {
+        el.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    });
+
+    // Set today date
+    document.getElementById("date").valueAsDate = new Date();
 </script>
 
 </body>
