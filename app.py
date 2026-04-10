@@ -33,10 +33,10 @@ def form():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    name = request.form['name']
+    name = request.form['name'].upper()
     phone = request.form['phone']
     product = request.form['product']
-    issue = request.form['issue']
+    issue = request.form['issue'].upper()
 
     ref_number = "REF-" + str(uuid.uuid4())[:8]
 
