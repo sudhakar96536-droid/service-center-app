@@ -43,13 +43,25 @@
             border-radius: 5px;
             font-size: 16px;
         }
+
+        h2 {
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 
 <div class="container">
-<h2>Product Complaint Registration</h2>
+
+    <!-- ✅ LOGO -->
+    <div style="text-align:center; margin-bottom:10px;">
+        <img src="{{ url_for('static', filename='1logo.jpg') }}" 
+             alt="Logo" 
+             style="max-width:120px;">
+    </div>
+
+    <h2>Product Complaint Registration</h2>
 
 <form id="myForm" action="/submit" method="POST">
 
@@ -126,10 +138,11 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
+
 // Select2
 $('#product').select2({ width: '100%' });
 
-// Auto date
+// Date auto
 document.getElementById("date").valueAsDate = new Date();
 
 // Uppercase
@@ -143,8 +156,6 @@ document.querySelectorAll("input, textarea").forEach(el => {
 document.getElementById("myForm").addEventListener("submit", function(e){
 
     let valid = true;
-
-    // Clear errors
     document.querySelectorAll(".error").forEach(e => e.innerText="");
 
     // Mobile
@@ -154,10 +165,10 @@ document.getElementById("myForm").addEventListener("submit", function(e){
         valid = false;
     }
 
-    // Name (only letters)
+    // Name
     let name = document.getElementById("name").value;
     if(!/^[A-Z ]+$/.test(name)){
-        document.getElementById("nameError").innerText = "Name should contain only letters";
+        document.getElementById("nameError").innerText = "Only letters allowed";
         valid = false;
     }
 
@@ -170,45 +181,14 @@ document.getElementById("myForm").addEventListener("submit", function(e){
 
     // Product
     if(document.getElementById("product").value === ""){
-        document.getElementById("productError").innerText = "Please select product";
+        document.getElementById("productError").innerText = "Select product";
         valid = false;
     }
 
-    // Qty
-    if(document.getElementById("qty").value <= 0){
-        document.getElementById("qtyError").innerText = "Quantity must be greater than 0";
-        valid = false;
-    }
-
-    // Problem (only letters)
+    // Problem
     let problem = document.getElementById("problem").value;
     if(!/^[A-Z ]+$/.test(problem)){
         document.getElementById("problemError").innerText = "Only letters allowed";
-        valid = false;
-    }
-
-    // Serial
-    let serial = document.getElementById("serial").value;
-    if(!/^[A-Z0-9 ]+$/.test(serial)){
-        document.getElementById("serialError").innerText = "No special characters allowed";
-        valid = false;
-    }
-
-    // Bill (required)
-    if(document.getElementById("bill").value === ""){
-        document.getElementById("billError").innerText = "Bill is required";
-        valid = false;
-    }
-
-    // Date
-    if(document.getElementById("date").value === ""){
-        document.getElementById("dateError").innerText = "Select date";
-        valid = false;
-    }
-
-    // Warranty
-    if(document.getElementById("warranty").value === ""){
-        document.getElementById("warrantyError").innerText = "Select warranty";
         valid = false;
     }
 
@@ -216,6 +196,7 @@ document.getElementById("myForm").addEventListener("submit", function(e){
         e.preventDefault();
     }
 });
+
 </script>
 
 </body>
