@@ -3,7 +3,6 @@
 <head>
     <title>Service Request</title>
 
-    <!-- Mobile responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Select2 -->
@@ -57,18 +56,21 @@
     <form action="/submit" method="POST">
 
         <!-- Mobile -->
-        <input type="text" name="mobile" placeholder="Mobile Number" required>
+        <input type="text" name="mobile" placeholder="Mobile Number"
+               pattern="[0-9]{10}" maxlength="10"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+               required>
 
         <!-- Name -->
         <input type="text" name="name" class="upper" placeholder="Customer Name" required>
 
         <!-- Address -->
-        <textarea name="address" class="upper" placeholder="Address"></textarea>
+        <textarea name="address" class="upper" placeholder="Address" required></textarea>
 
-        <!-- Email -->
+        <!-- Email (optional) -->
         <input type="email" name="email" placeholder="Email">
 
-        <!-- GSTIN -->
+        <!-- GSTIN (optional) -->
         <input type="text" name="gstin" class="upper" placeholder="GSTIN">
 
         <!-- Product -->
@@ -80,23 +82,23 @@
         </select>
 
         <!-- Quantity -->
-        <input type="number" name="qty" value="1" min="1" placeholder="Quantity">
+        <input type="number" name="qty" value="1" min="1" required>
 
         <!-- Problem -->
         <textarea name="problem" class="upper" placeholder="Problem Description" required></textarea>
 
         <!-- Serial -->
-        <input type="text" name="serial" class="upper" placeholder="Serial Number">
+        <input type="text" name="serial" class="upper" placeholder="Serial Number" required>
 
         <!-- Bill -->
-        <input type="text" name="bill" placeholder="Bill Number">
+        <input type="text" name="bill" placeholder="Bill Number" required>
 
         <!-- Date -->
         <input type="date" name="date" id="date" required onkeydown="return false">
 
         <!-- Warranty -->
-        <select name="warranty">
-            <option value="">Warranty</option>
+        <select name="warranty" required>
+            <option value="">Select Warranty</option>
             <option value="IN">IN WARRANTY</option>
             <option value="OUT">OUT OF WARRANTY</option>
         </select>
@@ -111,21 +113,32 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-    // Product search dropdown
+    // Select2 dropdown
     $('#product').select2({
         width: '100%',
         placeholder: "Search your product"
     });
 
-    // Auto uppercase
+    // Uppercase auto
     document.querySelectorAll('.upper').forEach(el => {
-        el.addEventListener('input', function() {
+        el.addEventListener('input', function () {
             this.value = this.value.toUpperCase();
         });
     });
 
     // Set today date
     document.getElementById("date").valueAsDate = new Date();
+
+    // Custom validation message
+    document.querySelectorAll("input, textarea, select").forEach(el => {
+        el.addEventListener("invalid", function () {
+            this.setCustomValidity("This field is mandatory");
+        });
+
+        el.addEventListener("input", function () {
+            this.setCustomValidity("");
+        });
+    });
 </script>
 
 </body>
