@@ -13,8 +13,13 @@
         <label>Phone:</label><br>
         <input type="text" name="phone" required><br><br>
 
-        <label>Product:</label><br>
-        <input type="text" name="product" required><br><br>
+<label>Product:</label><br>
+<select name="product" required>
+    <option value="">Select Product</option>
+    {% for p in products %}
+        <option value="{{p}}">{{p}}</option>
+    {% endfor %}
+</select><br><br>
 
         <label>Issue:</label><br>
         <textarea name="issue" required></textarea><br><br>
