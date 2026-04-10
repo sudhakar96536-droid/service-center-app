@@ -9,6 +9,7 @@
 
     <style>
         body { font-family: Arial; background: #f5f5f5; }
+
         .container {
             max-width: 600px;
             margin: auto;
@@ -18,6 +19,7 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px #ccc;
         }
+
         input, textarea, select {
             width: 100%;
             padding: 10px;
@@ -25,6 +27,7 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         button {
             width: 100%;
             padding: 12px;
@@ -33,6 +36,10 @@
             border: none;
             border-radius: 5px;
             font-size: 16px;
+        }
+
+        button:hover {
+            background: darkgreen;
         }
     </style>
 </head>
@@ -54,8 +61,8 @@
 <!-- Name -->
 <input type="text" name="name" class="upper nospecial" placeholder="Customer Name" required>
 
-<!-- Address -->
-<textarea name="address" class="upper nospecial" placeholder="Address" required></textarea>
+<!-- Address (comma & dot allowed) -->
+<textarea name="address" class="upper address" placeholder="Address" required></textarea>
 
 <!-- Email (special allowed) -->
 <input type="email" name="email" placeholder="Email">
@@ -63,7 +70,7 @@
 <!-- GSTIN -->
 <input type="text" name="gstin" class="upper nospecial" placeholder="GSTIN">
 
-<!-- Product (special allowed) -->
+<!-- Product -->
 <select name="product" id="product" required>
     <option value="">Search Product</option>
     {% for p in products %}
@@ -71,7 +78,7 @@
     {% endfor %}
 </select>
 
-<!-- Qty -->
+<!-- Quantity -->
 <input type="number" name="qty" value="1" min="1" required>
 
 <!-- Problem -->
@@ -109,7 +116,7 @@ $('#product').select2({
     placeholder: "Search your product"
 });
 
-// Fix validation
+// Fix Select2 validation issue
 $('#product').on('change', function () {
     this.setCustomValidity('');
 });
@@ -121,17 +128,28 @@ document.querySelectorAll('.upper').forEach(el => {
     });
 });
 
-// ❌ Remove special characters (only letters + numbers + space)
+// ❌ No special characters (general fields)
 document.querySelectorAll('.nospecial').forEach(el => {
     el.addEventListener('input', function () {
-        this.value = this.value.replace(/[^A-Z0-9 ]/gi, '');
+        let val = this.value.toUpperCase();
+        val = val.replace(/[^A-Z0-9 ]/g, '');
+        this.value = val;
     });
 });
 
-// Date auto
+// ✅ Address allows comma & dot
+document.querySelectorAll('.address').forEach(el => {
+    el.addEventListener('input', function () {
+        let val = this.value.toUpperCase();
+        val = val.replace(/[^A-Z0-9 ,.\n]/g, '');
+        this.value = val;
+    });
+});
+
+// Set today date
 document.getElementById("date").valueAsDate = new Date();
 
-// Validation message
+// Validation messages
 document.querySelectorAll("input, textarea, select").forEach(el => {
     el.addEventListener("invalid", function () {
         this.setCustomValidity("This field is mandatory");
