@@ -116,7 +116,7 @@ def admin():
     </head>
     <body>
 
-    <h2>Customer Records</h2>
+    <h2>Product Complaint Registration</h2>
 
     <table>
         <tr>
