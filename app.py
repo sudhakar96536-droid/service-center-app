@@ -9,7 +9,7 @@ app = Flask(__name__)
 # =========================
 # DATABASE CONNECTION
 # =========================
-DATABASE_URL = os.environ.get("postgresql://complaints_vfyc_user:McgqUg7fXsLWwQwZsX1K7YR0fGIWaHai@dpg-d7cvg6vavr4c73dnu6ig-a/complaints_vfyc")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_conn():
     return psycopg2.connect(DATABASE_URL)
