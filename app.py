@@ -84,7 +84,7 @@ def submit():
         INSERT INTO customers
         (ref_number, mobile, name, address, email, gstin,
          product, qty, problem, serial, bill, date, warranty,search_mobile)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, (
         ref_number, mobile, name, address, email, gstin,
         product, qty, problem, serial, bill, date, warranty, search_mobile
