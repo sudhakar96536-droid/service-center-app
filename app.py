@@ -1,17 +1,29 @@
-from flask import Flask, render_template, request, redirect
-import sqlite3
+from flask import Flask, render_template, request
+import psycopg2
+import os
 import uuid
 import json
 
 app = Flask(__name__)
 
-# Create DB
+# =========================
+# DATABASE CONNECTION
+# =========================
+DATABASE_URL = os.environ.get("postgresql://complaints_vfyc_user:McgqUg7fXsLWwQwZsX1K7YR0fGIWaHai@dpg-d7cvg6vavr4c73dnu6ig-a/complaints_vfyc")
+
+def get_conn():
+    return psycopg2.connect(DATABASE_URL)
+
+# =========================
+# CREATE TABLE (RUN ON START)
+# =========================
 def init_db():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute('''
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS customers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             ref_number TEXT,
             mobile TEXT,
             name TEXT,
@@ -25,14 +37,18 @@ def init_db():
             bill TEXT,
             date DATE,
             warranty TEXT
-            
         )
-    ''')
+    """)
+
     conn.commit()
+    cur.close()
     conn.close()
 
 init_db()
 
+# =========================
+# FORM PAGE
+# =========================
 @app.route('/')
 def form():
     with open('products.json') as f:
@@ -40,6 +56,9 @@ def form():
 
     return render_template('form.html', products=products)
 
+# =========================
+# SUBMIT DATA
+# =========================
 @app.route('/submit', methods=['POST'])
 def submit():
     ref_number = "REF-" + str(uuid.uuid4())[:8]
@@ -50,33 +69,44 @@ def submit():
     email = request.form['email']
     gstin = request.form['gstin'].upper()
     product = request.form['product']
-    qty = request.form['qty']
+    qty = int(request.form['qty'])
     problem = request.form['problem'].upper()
     serial = request.form['serial'].upper()
     bill = request.form['bill']
     date = request.form['date']
     warranty = request.form['warranty']
 
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
+    conn = get_conn()
+    cur = conn.cursor()
 
-    c.execute("""
-        INSERT INTO customers 
-        (ref_number, mobile, name, address, email, gstin, product, qty, problem, serial, bill, date, warranty)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (ref_number, mobile, name, address, email, gstin, product, qty, problem, serial, bill, date, warranty))
+    cur.execute("""
+        INSERT INTO customers
+        (ref_number, mobile, name, address, email, gstin,
+         product, qty, problem, serial, bill, date, warranty)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (
+        ref_number, mobile, name, address, email, gstin,
+        product, qty, problem, serial, bill, date, warranty
+    ))
 
     conn.commit()
+    cur.close()
     conn.close()
 
     return f"✅ Submitted! Your Ref Number: <b>{ref_number}</b>"
 
+# =========================
+# ADMIN PANEL
+# =========================
 @app.route('/admin')
 def admin():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM customers")
-    data = c.fetchall()
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM customers ORDER BY id DESC")
+    data = cur.fetchall()
+
+    cur.close()
     conn.close()
 
     html = """
@@ -105,19 +135,12 @@ def admin():
                 color: white;
             }
 
-            tr:nth-child(even) {
-                background: #f2f2f2;
-            }
-
-            tr:hover {
-                background: #ddd;
-            }
+            tr:nth-child(even) { background: #f2f2f2; }
+            tr:hover { background: #ddd; }
         </style>
     </head>
     <body>
-
-    <h2>Product Complaint Registration Report</h2>
-
+    <h2>Product Complaint Report</h2>
     <table>
         <tr>
             <th>ID</th>
@@ -143,13 +166,10 @@ def admin():
             html += f"<td>{col}</td>"
         html += "</tr>"
 
-    html += """
-    </table>
-    </body>
-    </html>
-    """
+    html += "</table></body></html>"
 
     return html
+
 
 if __name__ == '__main__':
     app.run(debug=True)
