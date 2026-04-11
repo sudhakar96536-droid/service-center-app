@@ -61,6 +61,11 @@
 
 <form id="myForm" action="/submit" method="POST">
 
+<!-- Search By Mobile No -->
+<input type="tel" id="search_mobile" name="search_mobile" placeholder="Search By Mobile No">
+<div class="error" id="searchMobileError"></div>
+
+    
 <!-- Mobile -->
 <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number">
 <div class="error" id="mobileError"></div>
@@ -150,7 +155,14 @@ document.getElementById("myForm").addEventListener("submit", function(e){
 
     let valid = true;
     document.querySelectorAll(".error").forEach(e => e.innerText="");
+    let search_mobile = document.getElementById("search_mobile").value;
 
+    // search_mobile
+    if(search_mobile !== "" && !/^[0-9]{10}$/.test(search_mobile)){
+    document.getElementById("searchMobileError").innerText = "Enter valid 10 digit mobile number";
+    valid = false;
+    }
+    
     // Mobile
     let mobile = document.getElementById("mobile").value;
     if(!/^[0-9]{10}$/.test(mobile)){
