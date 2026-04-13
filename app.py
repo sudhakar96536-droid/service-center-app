@@ -64,6 +64,7 @@ def submit():
     ref_number = "REF-" + str(uuid.uuid4())[:8]
     
     search_mobile = request.form.get('search_mobile')
+    customer_type = request.form.get('customer_type')
     mobile = request.form['mobile']
     name = request.form['name'].upper()
     address = request.form['address'].upper()
@@ -83,11 +84,11 @@ def submit():
     cur.execute("""
         INSERT INTO customers
         (ref_number, mobile, name, address, email, gstin,
-         product, qty, problem, serial, bill, date, warranty,search_mobile)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+         product, qty, problem, serial, bill, date, warranty,search_mobile,customer_type)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, (
         ref_number, mobile, name, address, email, gstin,
-        product, qty, problem, serial, bill, date, warranty, search_mobile
+        product, qty, problem, serial, bill, date, warranty, search_mobile, customer_type
     ))
 
     conn.commit()
@@ -159,6 +160,7 @@ def admin():
             <th>Date</th>
             <th>Warranty</th>
             <th>Search Mobile</th>
+            <th>Customer Type</th>
         </tr>
     """
 
