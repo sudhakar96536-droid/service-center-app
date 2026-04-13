@@ -96,6 +96,14 @@ def submit():
     pincode = request.form.get('pincode')
     state = request.form.get('state')
     remarks = request.form.get('remarks')
+    
+service_mode = request.form.get("service_mode")
+courier_name = request.form.get("courier_name")
+no_boxes = request.form.get("no_boxes")
+no_items = request.form.get("no_items")
+docket_no = request.form.get("docket_no")
+weight = request.form.get("weight")
+courier_remarks = request.form.get("courier_remarks")
 
     # ---------------- MULTI PRODUCT DATA ----------------
     products = request.form.getlist('product[]')
@@ -123,10 +131,10 @@ def submit():
     cur.execute("""
         INSERT INTO customers
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
-         email, gstin,
+         email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
          search_mobile, customer_type)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                 %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
@@ -138,10 +146,15 @@ def submit():
         pincode,
         state,
         remarks,
-
         email,
         gstin,
-
+        service_mode,
+        courier_name,
+        no_boxes,
+        no_items,
+        docket_no,
+        weight,
+        courier_remarks,
         products[0],
         qtys[0] if qtys else 1,
         problems[0],
@@ -161,10 +174,10 @@ def submit():
         cur.execute("""
             INSERT INTO customers
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
-             email, gstin,
+             email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
              search_mobile, customer_type)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                     %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
@@ -179,7 +192,13 @@ def submit():
 
             email,
             gstin,
-
+            service_mode,
+            courier_name,
+            no_boxes,
+            no_items,
+            docket_no,
+            weight,
+            courier_remarks,
             products[i],
             qtys[i] if i < len(qtys) else 1,
             problems[i],
@@ -211,7 +230,7 @@ def admin():
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
                remarks, email, gstin, product, qty, problem, serial, bill, date,
-               warranty, search_mobile, customer_type
+               warranty, search_mobile, customer_type, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks
         FROM customers
         ORDER BY id DESC
     """)
@@ -258,6 +277,13 @@ def admin():
             <th>Warranty</th>
             <th>Search Mobile</th>
             <th>Customer Type</th>
+            <th>Service Type</th>
+            <th>Courier Name</th>
+            <th>No of Boxes</th>
+            <th>No of Items</th>
+            <th>Courier Docket No</th>
+            <th>Weight</th>
+            <th>Courier Remarks</th>
         </tr>
     """
 
