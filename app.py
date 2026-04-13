@@ -22,7 +22,7 @@ def init_db():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS customers (
             id SERIAL PRIMARY KEY,
-            ref_number TEXT,
+            ref_number TEXT UNIQUE,
 
             mobile TEXT,
             name TEXT,
@@ -53,6 +53,7 @@ def init_db():
     cur.close()
     conn.close()
 
+
 init_db()
 
 
@@ -79,6 +80,7 @@ def submit():
     conn = get_conn()
     cur = conn.cursor()
 
+    # ---------------- CUSTOMER DATA ----------------
     search_mobile = request.form.get('search_mobile')
     customer_type = request.form.get('customer_type')
 
@@ -95,7 +97,7 @@ def submit():
     state = request.form.get('state')
     remarks = request.form.get('remarks')
 
-    # MULTI PRODUCT DATA
+    # ---------------- MULTI PRODUCT DATA ----------------
     products = request.form.getlist('product[]')
     qtys = request.form.getlist('qty[]')
     problems = request.form.getlist('problem[]')
@@ -107,15 +109,58 @@ def submit():
     if not products:
         return "❌ Please add at least one product"
 
-    # SAFE REF NUMBER (NO DUPLICATES)
-    ref_number = "REF-" + str(abs(hash(mobile)))[0:8]
+    # ---------------- STEP 1: INSERT FIRST ROW ----------------
+    cur.execute("""
+        INSERT INTO customers
+        (mobile, name, address, address1, city, pincode, state, remarks,
+         email, gstin,
+         product, qty, problem, serial, bill, date, warranty,
+         search_mobile, customer_type)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                %s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING id
+    """, (
+        mobile,
+        name,
+        address,
+        address1,
+        city,
+        pincode,
+        state,
+        remarks,
 
-    for i in range(len(products)):
+        email,
+        gstin,
+
+        products[0],
+        qtys[0] if qtys[0] else 1,
+        problems[0],
+        serials[0],
+        bills[0],
+        dates[0],
+        warranties[0],
+
+        search_mobile,
+        customer_type
+    ))
+
+    ref_id = cur.fetchone()[0]
+    ref_number = f"REF-{ref_id}"
+
+    # ---------------- STEP 2: UPDATE FIRST ROW ----------------
+    cur.execute(
+        "UPDATE customers SET ref_number=%s WHERE id=%s",
+        (ref_number, ref_id)
+    )
+
+    # ---------------- STEP 3: INSERT REMAINING PRODUCTS ----------------
+    for i in range(1, len(products)):
 
         cur.execute("""
             INSERT INTO customers
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
-             email, gstin, product, qty, problem, serial, bill, date, warranty,
+             email, gstin,
+             product, qty, problem, serial, bill, date, warranty,
              search_mobile, customer_type)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                     %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
@@ -226,7 +271,7 @@ def admin():
 
 
 # =========================
-# RUN
+# RUN APP
 # =========================
 if __name__ == '__main__':
     app.run(debug=True)
