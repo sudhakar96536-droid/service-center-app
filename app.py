@@ -53,8 +53,10 @@ init_db()
 def form():
     with open('products.json') as f:
         products = json.load(f)
+    with open('states.json') as s:
+        states = json.load(s)
 
-    return render_template('form.html', products=products)
+    return render_template('form.html', products=products, states=states)
 
 # =========================
 # SUBMIT DATA
