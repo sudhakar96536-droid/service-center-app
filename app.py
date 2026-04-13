@@ -128,7 +128,7 @@ def admin():
     cur.execute("""
     SELECT id, ref_number, mobile, name, address, email, gstin,
     product, qty, problem, serial, bill, date, warranty,
-    search_mobile, customer_type, ref_id
+    search_mobile, customer_type, ref_id, address1, city, pincode, state, remarks
     FROM customers
     ORDER BY id DESC
     """)
