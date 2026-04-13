@@ -8,9 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
-        * {
-    box-sizing: border-box;
-}
+        * { box-sizing: border-box; }
+
         body { font-family: Arial; background: #f5f5f5; }
 
         .container {
@@ -50,11 +49,19 @@
         h2 { text-align: center; }
 
         .product-box {
-            border: 2px solid #28a745; /* ✅ GREEN BORDER */
+            border: 3px solid #28a745;
             padding: 12px;
             margin-bottom: 15px;
             border-radius: 10px;
-            background: #f9fff9; /* light green background (optional) */
+            background: #f9fff9;
+        }
+
+        #courierBox {
+            border: 2px solid #ff9800;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            background: #fffaf2;
         }
     </style>
 </head>
@@ -80,22 +87,20 @@
 </select>
 <div class="error" id="customerTypeError"></div>
 
-<!-- MOBILE SEARCH -->
-<input type="tel" id="search_mobile" name="search_mobile" placeholder="Search By Mobile No">
-<div class="error" id="searchMobileError"></div>
-
 <!-- MOBILE -->
 <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number">
-<div class="error" id="mobileError"></div>
+
+<!-- SEARCH -->
+<input type="tel" id="search_mobile" name="search_mobile" placeholder="Search By Mobile No">
 
 <!-- NAME -->
-<input type="text" id="name" name="name" placeholder="Customer Name">
+<input type="text" name="name" placeholder="Customer Name">
 
 <!-- ADDRESS -->
-<input type="text" name="address" id="address" placeholder="Address Line 1">
-<input type="text" name="address1" id="address1" placeholder="Address Line 2">
-<input type="text" name="city" id="city" placeholder="City">
-<input type="text" name="pincode" id="pincode" placeholder="Pincode">
+<input type="text" name="address" placeholder="Address Line 1">
+<input type="text" name="address1" placeholder="Address Line 2">
+<input type="text" name="city" placeholder="City">
+<input type="text" name="pincode" placeholder="Pincode">
 
 <select name="state" id="state">
     <option value="">Select State</option>
@@ -110,13 +115,41 @@
 
 <!-- REMARKS -->
 <input type="text" name="remarks" placeholder="Remarks">
-    
+
+<hr>
+
 <!-- PRODUCTS -->
 <h3>Products</h3>
 <div id="productList"></div>
 
 <button type="button" onclick="addProduct()">+ Add Product</button>
-<br><br> <!-- 👈 EMPTY SPACE -->
+
+<hr>
+
+<!-- SERVICE MODE -->
+<h3>Service Mode</h3>
+
+<select name="service_mode" id="service_mode">
+    <option value="">Select Option</option>
+    <option value="SERVICE CENTRE">SERVICE CENTRE</option>
+    <option value="COURIER">COURIER</option>
+</select>
+
+<div class="error" id="serviceModeError"></div>
+
+<!-- COURIER BOX -->
+<div id="courierBox" style="display:none;">
+
+    <input type="text" name="courier_name" placeholder="Courier Name">
+    <input type="number" name="no_boxes" placeholder="No of Boxes">
+    <input type="number" name="no_items" placeholder="No of Items">
+    <input type="text" name="docket_no" placeholder="Courier Docket No">
+    <input type="text" name="weight" placeholder="Weight">
+    <input type="text" name="courier_remarks" placeholder="Courier Remarks">
+
+</div>
+
+<br>
 <button type="submit">Submit</button>
 
 </form>
@@ -124,25 +157,12 @@
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
 
 // =====================
-// APPLY SELECT2
-// =====================
-function applySelect2() {
-    $('.product-select').select2({
-        width: '100%',
-        placeholder: "Search Product",
-        allowClear: true
-    });
-}
-
-// =====================
-// ADD PRODUCT BLOCK
+// PRODUCT ADD
 // =====================
 function addProduct() {
 
@@ -151,45 +171,48 @@ function addProduct() {
 
     div.innerHTML = `
         <select name="product[]" class="product-select" required>
-            <option value="">Search Product</option>
+            <option value="">Select Product</option>
             {% for p in products %}
                 <option value="{{p}}">{{p}}</option>
             {% endfor %}
         </select>
 
-        <input type="number" name="qty[]" value="1" min="1" required placeholder="Qty">
-
-        <input type="text" name="problem[]" required placeholder="Problem Description">
-
+        <input type="number" name="qty[]" value="1" min="1" required>
+        <input type="text" name="problem[]" placeholder="Problem Description">
         <input type="text" name="serial[]" placeholder="Serial Number">
 
-        <select name="warranty[]" required>
-            <option value="">Select Warranty</option>
+        <select name="warranty[]">
             <option value="UNDER WARRANTY">UNDER WARRANTY</option>
-            <option value="OUT OF WARRANTY (CHARGEABLE)">OUT OF WARRANTY</option>
+            <option value="OUT OF WARRANTY">OUT OF WARRANTY</option>
         </select>
 
         <input type="text" name="bill[]" placeholder="Bill Number">
-
         <input type="date" name="date[]" required>
 
         <button type="button" onclick="this.parentElement.remove()">Remove</button>
     `;
 
     document.getElementById("productList").appendChild(div);
-
-    applySelect2(); // 🔥 IMPORTANT
 }
 
-// =====================
-// AUTO FIRST PRODUCT
-// =====================
+// FIRST LOAD
 window.onload = function () {
     addProduct();
 };
 
 // =====================
-// AUTO UPPERCASE
+// SERVICE MODE
+// =====================
+document.getElementById("service_mode").addEventListener("change", function () {
+    if (this.value === "COURIER") {
+        document.getElementById("courierBox").style.display = "block";
+    } else {
+        document.getElementById("courierBox").style.display = "none";
+    }
+});
+
+// =====================
+// UPPERCASE
 // =====================
 document.addEventListener("input", function(e) {
     if (e.target.tagName === "INPUT") {
@@ -203,6 +226,7 @@ document.addEventListener("input", function(e) {
 document.getElementById("myForm").addEventListener("submit", function(e){
 
     let valid = true;
+
     document.querySelectorAll(".error").forEach(e => e.innerText="");
 
     if(document.getElementById("customer_type").value === ""){
@@ -212,34 +236,43 @@ document.getElementById("myForm").addEventListener("submit", function(e){
 
     let mobile = document.getElementById("mobile").value;
     if(!/^[0-9]{10}$/.test(mobile)){
-        document.getElementById("mobileError").innerText = "Enter valid 10 digit mobile number";
+        alert("Enter valid mobile");
         valid = false;
     }
 
-    let search_mobile = document.getElementById("search_mobile").value;
-    if(search_mobile !== "" && !/^[0-9]{10}$/.test(search_mobile)){
-        document.getElementById("searchMobileError").innerText = "Enter valid 10 digit mobile number";
+    let service = document.getElementById("service_mode").value;
+
+    if(service === ""){
+        document.getElementById("serviceModeError").innerText = "Select service mode";
         valid = false;
+    }
+
+    if(service === "COURIER"){
+
+        let fields = document.querySelectorAll("#courierBox input");
+
+        fields.forEach(f => {
+            if(f.value === "") valid = false;
+        });
+
+        if(!valid){
+            alert("Fill courier details");
+        }
     }
 
     if(document.getElementById("productList").children.length === 0){
-        alert("Please add at least one product");
+        alert("Add product");
         valid = false;
     }
 
-    // 🚨 STOP if validation fails
     if(!valid){
         e.preventDefault();
         return;
     }
 
-    // ✅ CONFIRMATION POPUP
-    let confirmSubmit = confirm("Are you sure you want to submit this complaint?");
-
-    if(!confirmSubmit){
-        e.preventDefault(); // ❌ cancel submit
-    }
-
+    // CONFIRMATION
+    let ok = confirm("Are you sure to submit?");
+    if(!ok) e.preventDefault();
 });
 
 </script>
