@@ -87,13 +87,19 @@
 <div class="error" id="nameError"></div>
 
 <!-- Address -->
-<textarea id="address" name="address" placeholder="Address"></textarea>
-<div class="error" id="addressError"></div>
+<!--<textarea id="address" name="address" placeholder="Address Line 1"></textarea>-->
+<input type="text" name="address" id="address" placeholder="Address Line 1">
+<!--<div class="error" id="addressError"></div>-->
 
-    <input type="text" name="address1" id="address1" placeholder="Address Line 1">
-        <input type="text" name="city" id="city" placeholder="City">
+    <input type="text" name="address1" id="address1" placeholder="Address Line 2">
+    <input type="text" name="city" id="city" placeholder="City">
     <input type="text" name="pincode" id="pincode" placeholder="Pincode">
-    <input type="text" name="state" id="state" placeholder="State">
+    <select name="state" id="state">
+    <option value="">Select State</option>
+    {% for s in states %}
+        <option value="{{s}}">{{s}}</option>
+    {% endfor %}
+</select>
     
 <!-- Email -->
 <input type="email" id="email" name="email" placeholder="Email">
@@ -115,10 +121,12 @@
 <div class="error" id="qtyError"></div>
 
 <!-- Problem -->
-<textarea id="problem" name="problem" placeholder="Problem Description"></textarea>
-<div class="error" id="problemError"></div>
+    <input type="text" name="problem" id="problem" placeholder="Problem Description">
+<!--<textarea id="problem" name="problem" placeholder="Problem Description"></textarea>
+<div class="error" id="problemError"></div>-->
 
-    <textarea name="remarks" id="remarks" placeholder="Remarks"></textarea>
+    <!--<textarea name="remarks" id="remarks" placeholder="Remarks"></textarea>-->
+  <input type="text" name="remarks" id="remarks" placeholder="Remarks">
     
 <!-- Serial -->
 <input type="text" id="serial" name="serial" placeholder="Serial Number">
