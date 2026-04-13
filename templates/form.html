@@ -4,7 +4,6 @@
     <title>Product Complaint Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
@@ -45,6 +44,13 @@
         }
 
         h2 { text-align: center; }
+
+        .product-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -52,8 +58,7 @@
 
 <div class="container">
 
-    <!-- LOGO -->
-    <div style="text-align:center; margin-bottom:10px;">
+    <div style="text-align:center;">
         <img src="{{ url_for('static', filename='1logo.jpg') }}" style="max-width:120px;">
     </div>
 
@@ -61,100 +66,50 @@
 
 <form id="myForm" action="/submit" method="POST">
 
-
-<label style="font-weight:bold;">Customer Type:</label>
-
-<!-- customer_type -->
+<!-- CUSTOMER TYPE -->
+<label><b>Customer Type</b></label>
 <select name="customer_type" id="customer_type">
     <option value="">Select Customer Type</option>
     <option value="DIRECT CUSTOMER">DIRECT CUSTOMER</option>
     <option value="PARTNERS">PARTNERS</option>
 </select>
-
 <div class="error" id="customerTypeError"></div>
-    
-<!-- Search By Mobile No -->
+
+<!-- MOBILE SEARCH -->
 <input type="tel" id="search_mobile" name="search_mobile" placeholder="Search By Mobile No">
 <div class="error" id="searchMobileError"></div>
 
-    
-<!-- Mobile -->
+<!-- MOBILE -->
 <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number">
 <div class="error" id="mobileError"></div>
 
-<!-- Name -->
+<!-- NAME -->
 <input type="text" id="name" name="name" placeholder="Customer Name">
-<div class="error" id="nameError"></div>
 
-<!-- Address -->
-<!--<textarea id="address" name="address" placeholder="Address Line 1"></textarea>-->
+<!-- ADDRESS -->
 <input type="text" name="address" id="address" placeholder="Address Line 1">
-<!--<div class="error" id="addressError"></div>-->
+<input type="text" name="address1" id="address1" placeholder="Address Line 2">
+<input type="text" name="city" id="city" placeholder="City">
+<input type="text" name="pincode" id="pincode" placeholder="Pincode">
 
-    <input type="text" name="address1" id="address1" placeholder="Address Line 2">
-    <input type="text" name="city" id="city" placeholder="City">
-    <input type="text" name="pincode" id="pincode" placeholder="Pincode">
-    <select name="state" id="state">
+<select name="state" id="state">
     <option value="">Select State</option>
     {% for s in states %}
         <option value="{{s}}">{{s}}</option>
     {% endfor %}
 </select>
-    
-<!-- Email -->
-<input type="email" id="email" name="email" placeholder="Email">
 
-<!-- GSTIN -->
-<input type="text" id="gstin" name="gstin" placeholder="GSTIN">
+<!-- EMAIL / GST -->
+<input type="email" name="email" placeholder="Email">
+<input type="text" name="gstin" placeholder="GSTIN">
 
-<!-- Product -->
-<select name="product" id="product">
-    <option value="">Search Product</option>
-    {% for p in products %}
-        <option value="{{p}}">{{p}}</option>
-    {% endfor %}
-</select>
-<div class="error" id="productError"></div>
+<!-- PRODUCTS SECTION -->
+<h3>Products</h3>
+<div id="productList"></div>
+<button type="button" onclick="addProduct()">+ Add Product</button>
 
-<!-- Qty -->
-<input type="number" id="qty" name="qty" value="1" min="1">
-<div class="error" id="qtyError"></div>
-
-<!-- Problem -->
-    <input type="text" name="problem" id="problem" placeholder="Problem Description">
-<!--<textarea id="problem" name="problem" placeholder="Problem Description"></textarea>
-<div class="error" id="problemError"></div>-->
-
-    <!--<textarea name="remarks" id="remarks" placeholder="Remarks"></textarea>-->
-  <input type="text" name="remarks" id="remarks" placeholder="Remarks">
-    
-<!-- Serial -->
-<input type="text" id="serial" name="serial" placeholder="Serial Number">
-<div class="error" id="serialError"></div>
-
-<!-- Bill -->
-<input type="text" id="bill" name="bill" placeholder="Bill Number">
-<div class="error" id="billError"></div>
-
-<!-- ✅ BILL DATE FIX -->
-<label style="font-weight:bold;">Bill Date (Purchase Date):</label>
-<input type="date" name="date" id="date">
-<small style="color:gray;">Select the date from your purchase bill</small>
-<div class="error" id="dateError"></div>
-
-<!-- Warranty -->
-<select name="warranty" id="warranty">
-    <option value="">Select Warranty</option>
-    <option value="UNDER WARRANTY">UNDER WARRANTY</option>
-    <!--<option value="WARRANTY CHARGEABLE">WARRANTY CHARGEABLE</option>-->
-    <option value="OUT OF WARRANTY (CHARGEABLE)">OUT OF WARRANTY (CHARGEABLE)</option>
-    <!--<option value="PHYSICAL DAMAGE (CHARGEABLE)">PHYSICAL DAMAGE (CHARGEABLE)</option>
-    <option value="WARRANTY PHYSICAL DAMAGE (CHARGEABLE)">WARRANTY PHYSICAL DAMAGE (CHARGEABLE)</option>
-    <option value="DOA">DOA</option>
-    <option value="WARRANTY SS">WARRANTY SS</option>
-    <option value="LFR WARRANTY">LFR WARRANTY</option>-->
-</select>
-<div class="error" id="warrantyError"></div>
+<!-- REMARKS -->
+<input type="text" name="remarks" placeholder="Remarks">
 
 <button type="submit">Submit</button>
 
@@ -163,74 +118,89 @@
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
 
-// Select2
-$('#product').select2({ width: '100%' });
-
-// Uppercase
-document.querySelectorAll("input, textarea").forEach(el => {
+// AUTO UPPERCASE
+document.querySelectorAll("input").forEach(el => {
     el.addEventListener("input", function () {
         this.value = this.value.toUpperCase();
     });
 });
 
-// Validation
+
+// =====================
+// ADD PRODUCT BLOCK
+// =====================
+function addProduct() {
+
+    let div = document.createElement("div");
+    div.classList.add("product-box");
+
+    div.innerHTML = `
+        <select name="product[]" required>
+            <option value="">Select Product</option>
+            {% for p in products %}
+                <option value="{{p}}">{{p}}</option>
+            {% endfor %}
+        </select>
+
+        <input type="number" name="qty[]" value="1" min="1" required placeholder="Qty">
+
+        <input type="text" name="problem[]" required placeholder="Problem Description">
+
+        <input type="text" name="serial[]" placeholder="Serial Number">
+
+        <select name="warranty[]" required>
+            <option value="">Select Warranty</option>
+            <option value="UNDER WARRANTY">UNDER WARRANTY</option>
+            <option value="OUT OF WARRANTY (CHARGEABLE)">OUT OF WARRANTY</option>
+        </select>
+
+        <input type="text" name="bill[]" placeholder="Bill Number">
+
+        <input type="date" name="date[]" required>
+
+        <button type="button" onclick="this.parentElement.remove()">Remove</button>
+    `;
+
+    document.getElementById("productList").appendChild(div);
+}
+
+
+// AUTO FIRST PRODUCT
+window.onload = function () {
+    addProduct();
+};
+
+
+// =====================
+// VALIDATION
+// =====================
 document.getElementById("myForm").addEventListener("submit", function(e){
 
     let valid = true;
     document.querySelectorAll(".error").forEach(e => e.innerText="");
-    let search_mobile = document.getElementById("search_mobile").value;
 
-    // search_mobile
-    if(search_mobile !== "" && !/^[0-9]{10}$/.test(search_mobile)){
-    document.getElementById("searchMobileError").innerText = "Enter valid 10 digit mobile number";
-    valid = false;
+    if(document.getElementById("customer_type").value === ""){
+        document.getElementById("customerTypeError").innerText = "Select customer type";
+        valid = false;
     }
-    
-    // Mobile
+
     let mobile = document.getElementById("mobile").value;
     if(!/^[0-9]{10}$/.test(mobile)){
         document.getElementById("mobileError").innerText = "Enter valid 10 digit mobile number";
         valid = false;
     }
 
-    // Name
-    let name = document.getElementById("name").value;
-    if(!/^[A-Z ]+$/.test(name)){
-        document.getElementById("nameError").innerText = "Only letters allowed";
+    let search_mobile = document.getElementById("search_mobile").value;
+    if(search_mobile !== "" && !/^[0-9]{10}$/.test(search_mobile)){
+        document.getElementById("searchMobileError").innerText = "Enter valid 10 digit mobile number";
         valid = false;
     }
 
-    // Address
-    let address = document.getElementById("address").value;
-    if(!/^[A-Z0-9 ,.\n]+$/.test(address)){
-        document.getElementById("addressError").innerText = "Only letters, numbers, comma, dot allowed";
-        valid = false;
-    }
-
-    // Product
-    if(document.getElementById("product").value === ""){
-        document.getElementById("productError").innerText = "Select product";
-        valid = false;
-    }
-
-    // Problem
-    let problem = document.getElementById("problem").value;
-    if(!/^[A-Z ]+$/.test(problem)){
-        document.getElementById("problemError").innerText = "Only letters allowed";
-        valid = false;
-    }
-    // Customer Type
-    if(document.getElementById("customer_type").value === ""){
-    document.getElementById("customerTypeError").innerText = "Select customer type";
-    valid = false;
-    }
-    // Date
-    if(document.getElementById("date").value === ""){
-        document.getElementById("dateError").innerText = "Select bill date";
+    if(document.getElementById("productList").children.length === 0){
+        alert("Please add at least one product");
         valid = false;
     }
 
