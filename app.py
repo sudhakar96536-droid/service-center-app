@@ -72,7 +72,7 @@ def form():
 
 
 # =========================
-# SUBMIT (MULTI PRODUCT SAFE)
+# SUBMIT (MULTI PRODUCT SAFE + NO DUPLICATE REF)
 # =========================
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -80,7 +80,7 @@ def submit():
     conn = get_conn()
     cur = conn.cursor()
 
-    # ---------------- CUSTOMER DATA ----------------
+    # ---------------- CUSTOMER INFO ----------------
     search_mobile = request.form.get('search_mobile')
     customer_type = request.form.get('customer_type')
 
@@ -107,19 +107,29 @@ def submit():
     warranties = request.form.getlist('warranty[]')
 
     if not products:
-        return "❌ Please add at least one product"
+        return "❌ No product added"
 
-    # ---------------- STEP 1: INSERT FIRST ROW ----------------
+    # ======================================================
+    # 🔥 STEP 1: GET UNIQUE REF NUMBER FROM POSTGRES SEQUENCE
+    # ======================================================
+    cur.execute("SELECT nextval('ref_seq')")
+    ref_id = cur.fetchone()[0]
+
+    ref_number = f"REF-{ref_id:08d}"   # REF-00000001 format
+
+    # ======================================================
+    # STEP 2: INSERT FIRST PRODUCT (WITH REF)
+    # ======================================================
     cur.execute("""
         INSERT INTO customers
-        (mobile, name, address, address1, city, pincode, state, remarks,
+        (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin,
          product, qty, problem, serial, bill, date, warranty,
          search_mobile, customer_type)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s)
-        RETURNING id
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
+        ref_number,
         mobile,
         name,
         address,
@@ -133,7 +143,7 @@ def submit():
         gstin,
 
         products[0],
-        qtys[0] if qtys[0] else 1,
+        qtys[0] if qtys else 1,
         problems[0],
         serials[0],
         bills[0],
@@ -144,18 +154,10 @@ def submit():
         customer_type
     ))
 
-    ref_id = cur.fetchone()[0]
-    ref_number = f"REF-{ref_id}"
-
-    # ---------------- STEP 2: UPDATE FIRST ROW ----------------
-    cur.execute(
-        "UPDATE customers SET ref_number=%s WHERE id=%s",
-        (ref_number, ref_id)
-    )
-
-    # ---------------- STEP 3: INSERT REMAINING PRODUCTS ----------------
+    # ======================================================
+    # STEP 3: INSERT REMAINING PRODUCTS (SAME REF)
+    # ======================================================
     for i in range(1, len(products)):
-
         cur.execute("""
             INSERT INTO customers
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
@@ -198,7 +200,7 @@ def submit():
 
 
 # =========================
-# ADMIN PAGE
+# ADMIN PANEL
 # =========================
 @app.route('/admin')
 def admin():
