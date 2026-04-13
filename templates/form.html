@@ -4,6 +4,7 @@
     <title>Product Complaint Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
@@ -106,13 +107,12 @@
 <!-- REMARKS -->
 <input type="text" name="remarks" placeholder="Remarks">
     
-<!-- PRODUCTS SECTION -->
+<!-- PRODUCTS -->
 <h3>Products</h3>
 <div id="productList"></div>
+
 <button type="button" onclick="addProduct()">+ Add Product</button>
-
-
-
+<br><br> <!-- 👈 EMPTY SPACE -->
 <button type="submit">Submit</button>
 
 </form>
@@ -121,15 +121,21 @@
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 <script>
 
-// AUTO UPPERCASE
-document.querySelectorAll("input").forEach(el => {
-    el.addEventListener("input", function () {
-        this.value = this.value.toUpperCase();
+// =====================
+// APPLY SELECT2
+// =====================
+function applySelect2() {
+    $('.product-select').select2({
+        width: '100%',
+        placeholder: "Search Product",
+        allowClear: true
     });
-});
-
+}
 
 // =====================
 // ADD PRODUCT BLOCK
@@ -140,8 +146,8 @@ function addProduct() {
     div.classList.add("product-box");
 
     div.innerHTML = `
-        <select name="product[]" required>
-            <option value="">Select Product</option>
+        <select name="product[]" class="product-select" required>
+            <option value="">Search Product</option>
             {% for p in products %}
                 <option value="{{p}}">{{p}}</option>
             {% endfor %}
@@ -167,14 +173,25 @@ function addProduct() {
     `;
 
     document.getElementById("productList").appendChild(div);
+
+    applySelect2(); // 🔥 IMPORTANT
 }
 
-
+// =====================
 // AUTO FIRST PRODUCT
+// =====================
 window.onload = function () {
     addProduct();
 };
 
+// =====================
+// AUTO UPPERCASE
+// =====================
+document.addEventListener("input", function(e) {
+    if (e.target.tagName === "INPUT") {
+        e.target.value = e.target.value.toUpperCase();
+    }
+});
 
 // =====================
 // VALIDATION
@@ -206,9 +223,19 @@ document.getElementById("myForm").addEventListener("submit", function(e){
         valid = false;
     }
 
+    // 🚨 STOP if validation fails
     if(!valid){
         e.preventDefault();
+        return;
     }
+
+    // ✅ CONFIRMATION POPUP
+    let confirmSubmit = confirm("Are you sure you want to submit this complaint?");
+
+    if(!confirmSubmit){
+        e.preventDefault(); // ❌ cancel submit
+    }
+
 });
 
 </script>
