@@ -118,7 +118,13 @@ def admin():
     conn = get_conn()
     cur = conn.cursor()
 
-    cur.execute("SELECT * FROM customers ORDER BY id DESC")
+    cur.execute("""
+    SELECT id, ref_number, mobile, name, address, email, gstin,
+    product, qty, problem, serial, bill, date, warranty,
+    search_mobile, customer_type, ref_id
+    FROM customers
+    ORDER BY id DESC
+    """)
     data = cur.fetchall()
 
     cur.close()
