@@ -61,6 +61,18 @@
 
 <form id="myForm" action="/submit" method="POST">
 
+
+<label style="font-weight:bold;">Customer Type:</label>
+
+<!-- customer_type -->
+<select name="customer_type" id="customer_type">
+    <option value="">Select Customer Type</option>
+    <option value="DIRECT CUSTOMER">DIRECT CUSTOMER</option>
+    <option value="PARTNERS">PARTNERS</option>
+</select>
+
+<div class="error" id="customerTypeError"></div>
+    
 <!-- Search By Mobile No -->
 <input type="tel" id="search_mobile" name="search_mobile" placeholder="Search By Mobile No">
 <div class="error" id="searchMobileError"></div>
@@ -196,7 +208,11 @@ document.getElementById("myForm").addEventListener("submit", function(e){
         document.getElementById("problemError").innerText = "Only letters allowed";
         valid = false;
     }
-
+    // Customer Type
+    if(document.getElementById("customer_type").value === ""){
+    document.getElementById("customerTypeError").innerText = "Select customer type";
+    valid = false;
+    }
     // Date
     if(document.getElementById("date").value === ""){
         document.getElementById("dateError").innerText = "Select bill date";
