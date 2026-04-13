@@ -77,20 +77,27 @@ def submit():
     bill = request.form['bill']
     date = request.form['date']
     warranty = request.form['warranty']
+    address1 = request.form.get('address1')
+    city = request.form.get('city')
+    pincode = request.form.get('pincode')
+    state = request.form.get('state')
+    remarks = request.form.get('remarks')
 
     conn = get_conn()
     cur = conn.cursor()
 
     cur.execute("""
-        INSERT INTO customers
-        (mobile, name, address, email, gstin,
-         product, qty, problem, serial, bill, date, warranty,search_mobile,customer_type)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        RETURNING ref_id
-    """, (
-        mobile, name, address, email, gstin,
-        product, qty, problem, serial, bill, date, warranty, search_mobile, customer_type
-    ))
+    INSERT INTO customers
+    (mobile, name, address, address1, city, pincode, state, remarks,
+     email, gstin, product, qty, problem, serial, bill, date,
+     warranty, search_mobile, customer_type)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    RETURNING ref_id
+""", (
+    mobile, name, address, address1, city, pincode, state, remarks,
+    email, gstin, product, qty, problem, serial, bill, date,
+    warranty, search_mobile, customer_type
+))
     
     # ✅ EXACT PLACE — right after INSERT
     ref_id = cur.fetchone()[0]
@@ -181,6 +188,11 @@ def admin():
             <th>Search Mobile</th>
             <th>Customer Type</th>
             <th>Ref ID</th>
+            <th>Address1</th>
+            <th>City</th>
+            <th>Pincode</th>
+            <th>State</th>
+            <th>Remarks</th>
         </tr>
     """
 
