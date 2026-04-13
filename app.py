@@ -215,7 +215,52 @@ def submit():
     cur.close()
     conn.close()
 
-    return f"✅ Submitted Successfully! Ref No: <b>{ref_number}</b>"
+    return f"""
+<html>
+<head>
+    <title>Success</title>
+    <style>
+        body {{
+            font-family: Arial;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }}
+
+        .box {{
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 0px 15px #ccc;
+        }}
+
+        .success {{
+            font-size: 28px;
+            font-weight: bold;
+            color: green;
+        }}
+
+        .ref {{
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #333;
+        }}
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <div class="success">✅ Submitted Successfully</div>
+    <div class="ref">Ref No: {ref_number}</div>
+</div>
+
+</body>
+</html>
+"""
 
 @app.route("/search-products")
 def search_products():
