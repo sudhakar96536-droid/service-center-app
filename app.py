@@ -217,7 +217,22 @@ def submit():
 
     return f"✅ Submitted Successfully! Ref No: <b>{ref_number}</b>"
 
+@app.route("/search-products")
+def search_products():
+    q = request.args.get("q", "").upper()
 
+    with open("products.json") as f:
+        products = json.load(f)
+
+    items = []
+
+    for p in products:
+        if q in p.upper():
+            items.append({"id": p, "text": p})
+        if len(items) >= 20:
+            break
+
+    return {"items": items}
 # =========================
 # ADMIN PANEL
 # =========================
