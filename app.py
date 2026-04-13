@@ -53,7 +53,6 @@ def init_db():
     cur.close()
     conn.close()
 
-
 init_db()
 
 
@@ -72,7 +71,7 @@ def form():
 
 
 # =========================
-# SUBMIT (MULTI PRODUCT FIXED)
+# SUBMIT (MULTI PRODUCT SAFE)
 # =========================
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -80,7 +79,6 @@ def submit():
     conn = get_conn()
     cur = conn.cursor()
 
-    # CUSTOMER DATA
     search_mobile = request.form.get('search_mobile')
     customer_type = request.form.get('customer_type')
 
@@ -106,14 +104,12 @@ def submit():
     dates = request.form.getlist('date[]')
     warranties = request.form.getlist('warranty[]')
 
-    # SAFETY CHECK
     if not products:
         return "❌ Please add at least one product"
 
-    # GENERATE SINGLE REF NUMBER
+    # SAFE REF NUMBER (NO DUPLICATES)
     ref_number = "REF-" + str(abs(hash(mobile)))[0:8]
 
-    # INSERT ALL PRODUCTS
     for i in range(len(products)):
 
         cur.execute("""
@@ -157,7 +153,80 @@ def submit():
 
 
 # =========================
-# RUN APP
+# ADMIN PAGE
+# =========================
+@app.route('/admin')
+def admin():
+
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
+               remarks, email, gstin, product, qty, problem, serial, bill, date,
+               warranty, search_mobile, customer_type
+        FROM customers
+        ORDER BY id DESC
+    """)
+
+    data = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    html = """
+    <html>
+    <head>
+        <title>Admin Panel</title>
+        <style>
+            body { font-family: Arial; background: #f5f5f5; padding:20px; }
+            table { border-collapse: collapse; width: 100%; background: white; font-size: 13px; }
+            th, td { border: 1px solid #ddd; padding: 6px; }
+            th { background: #28a745; color: white; }
+            tr:nth-child(even) { background: #f2f2f2; }
+        </style>
+    </head>
+    <body>
+    <h2>Product Complaint Report</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Ref No</th>
+            <th>Mobile</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Addr1</th>
+            <th>City</th>
+            <th>Pincode</th>
+            <th>State</th>
+            <th>Remarks</th>
+            <th>Email</th>
+            <th>GSTIN</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Problem</th>
+            <th>Serial</th>
+            <th>Bill</th>
+            <th>Date</th>
+            <th>Warranty</th>
+            <th>Search Mobile</th>
+            <th>Customer Type</th>
+        </tr>
+    """
+
+    for row in data:
+        html += "<tr>"
+        for col in row:
+            html += f"<td>{col}</td>"
+        html += "</tr>"
+
+    html += "</table></body></html>"
+
+    return html
+
+
+# =========================
+# RUN
 # =========================
 if __name__ == '__main__':
     app.run(debug=True)
