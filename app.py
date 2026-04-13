@@ -83,14 +83,27 @@ def submit():
 
     cur.execute("""
         INSERT INTO customers
-        (ref_number, mobile, name, address, email, gstin,
+        (mobile, name, address, email, gstin,
          product, qty, problem, serial, bill, date, warranty,search_mobile,customer_type)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        RETURNING ref_id
     """, (
-        ref_number, mobile, name, address, email, gstin,
+        mobile, name, address, email, gstin,
         product, qty, problem, serial, bill, date, warranty, search_mobile, customer_type
     ))
+    
+    # ✅ EXACT PLACE — right after INSERT
+    ref_id = cur.fetchone()[0]
 
+    # Create reference number
+    ref_number = f"REF-{ref_id}"
+
+    # Save it into table
+    cur.execute(
+    "UPDATE customers SET ref_number=%s WHERE ref_id=%s",
+    (ref_number, ref_id)
+    )
+    
     conn.commit()
     cur.close()
     conn.close()
