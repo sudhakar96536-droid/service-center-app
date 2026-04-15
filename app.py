@@ -320,7 +320,7 @@ def submit():
         Please keep this number for future communication and tracking.
     </div>
     
-    warning_html = f"<div class='warning'>{warning_msg}</div>" if warning_msg else ""
+    {f'<div class="warning">{warning_msg}</div>' if warning_msg else ''}
     
 </div>
 
