@@ -110,6 +110,7 @@ def submit():
         no_boxes = None
         no_items = None
         docket_no = None
+        docket_date = None
         weight = None
         courier_remarks = None
     else:
@@ -117,6 +118,7 @@ def submit():
         no_boxes = to_int(request.form.get("no_boxes"))
         no_items = to_int(request.form.get("no_items"))
         docket_no = request.form.get("docket_no") or None
+        docket_date = request.form.get("docket_date") or None
         weight = request.form.get("weight") or None
         courier_remarks = request.form.get("courier_remarks") or None
     
@@ -131,6 +133,9 @@ def submit():
 
         if not docket_no:
             missing_fields.append("@ Docket Number")
+
+        if not docket_date:
+            missing_fields.append("@ Docket Date")
 
         if not no_boxes:
             missing_fields.append("@ No. of Boxes")
@@ -167,9 +172,9 @@ def submit():
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
-         search_mobile, customer_type)
+         search_mobile, customer_type,docket_date)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
         mobile,
@@ -198,7 +203,8 @@ def submit():
         warranties[0],
 
         search_mobile,
-        customer_type
+        customer_type,
+        docket_date
     ))
 
     # ======================================================
@@ -210,9 +216,9 @@ def submit():
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
              email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
-             search_mobile, customer_type)
+             search_mobile, customer_type,docket_date)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
             mobile,
@@ -242,7 +248,8 @@ def submit():
             warranties[i],
 
             search_mobile,
-            customer_type
+            customer_type,
+            docket_date
         ))
 
     conn.commit()
@@ -356,7 +363,7 @@ def admin():
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
                remarks, email, gstin, product, qty, problem, serial, bill, date,
-               warranty, search_mobile, customer_type, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks
+               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks
         FROM customers
         ORDER BY id DESC
     """)
@@ -405,9 +412,10 @@ def admin():
             <th>Customer Type</th>
             <th>Service Type</th>
             <th>Courier Name</th>
+            <th>Courier Docket No</th>
+            <th>Courier Docket Date</th>
             <th>No of Boxes</th>
             <th>No of Items</th>
-            <th>Courier Docket No</th>
             <th>Weight</th>
             <th>Courier Remarks</th>
         </tr>
