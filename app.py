@@ -97,13 +97,24 @@ def submit():
     state = request.form.get('state')
     remarks = request.form.get('remarks')
     
+      
     service_mode = request.form.get("service_mode")
-    courier_name = request.form.get("courier_name")
-    no_boxes = request.form.get("no_boxes")
-    no_items = request.form.get("no_items")
-    docket_no = request.form.get("docket_no")
-    weight = request.form.get("weight")
-    courier_remarks = request.form.get("courier_remarks")
+
+    if service_mode != "COURIER":
+    courier_name = None
+    no_boxes = None
+    no_items = None
+    docket_no = None
+    weight = None
+    courier_remarks = None
+    else:
+    courier_name = request.form.get("courier_name") or None
+    no_boxes = request.form.get("no_boxes") or None
+    no_items = request.form.get("no_items") or None
+    docket_no = request.form.get("docket_no") or None
+    weight = request.form.get("weight") or None
+    courier_remarks = request.form.get("courier_remarks") or None
+    
 
     # ---------------- MULTI PRODUCT DATA ----------------
     products = request.form.getlist('product[]')
