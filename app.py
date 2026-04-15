@@ -122,18 +122,18 @@ def submit():
     
     warning_msg = ""
 
-    if service_mode == "COURIER":
+    if service_mode != "SERVICE CENTRE":
 
         missing_fields = []
 
         if not courier_name:
-            missing_fields.append("Courier Name")
+            missing_fields.append("@ Courier Name")
 
         if not docket_no:
-            missing_fields.append("Docket Number")
+            missing_fields.append("@ Docket Number")
 
         if not no_boxes:
-            missing_fields.append("No. of Boxes")
+            missing_fields.append("@ No. of Boxes")
 
         if missing_fields:
             missing_str = ", ".join(missing_fields)
