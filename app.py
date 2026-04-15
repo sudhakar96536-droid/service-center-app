@@ -99,7 +99,11 @@ def submit():
     
       
     service_mode = request.form.get("service_mode")
-
+    def to_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
     if service_mode != "COURIER":
     courier_name = None
     no_boxes = None
@@ -109,8 +113,8 @@ def submit():
     courier_remarks = None
     else:
     courier_name = request.form.get("courier_name") or None
-    no_boxes = request.form.get("no_boxes") or None
-    no_items = request.form.get("no_items") or None
+    no_boxes = to_int(request.form.get("no_boxes"))
+    no_items = to_int(request.form.get("no_items"))
     docket_no = request.form.get("docket_no") or None
     weight = request.form.get("weight") or None
     courier_remarks = request.form.get("courier_remarks") or None
