@@ -122,7 +122,7 @@ def submit():
     
     warning_msg = ""
 
-    if service_mode != "SERVICE CENTRE":
+    if service_mode == "COURIER":
 
         missing_fields = []
 
@@ -320,7 +320,7 @@ def submit():
         Please keep this number for future communication and tracking.
     </div>
     
-    {"<div class='warning'>" + warning_msg + "</div>" if warning_msg else ""}
+    {f'<div class="warning">{warning_msg}</div>' if warning_msg else ''}
     
 </div>
 
