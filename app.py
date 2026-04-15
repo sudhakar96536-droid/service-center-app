@@ -137,11 +137,8 @@ def submit():
 
         if missing_fields:
             missing_str = ", ".join(missing_fields)
-
-            warning_msg = f"""
-            COURIER DETAILS REQUIRED: {missing_str}.
-            YOUR COMPLAINT IS SAVED, BUT PLEASE UPDATE COURIER DETAILS.
-            """
+            warning_msg = f"COURIER DETAILS REQUIRED: {missing_str}. YOUR COMPLAINT IS SAVED, BUT PLEASE UPDATE COURIER DETAILS."
+            
     # ---------------- MULTI PRODUCT DATA ----------------
     products = request.form.getlist('product[]')
     qtys = request.form.getlist('qty[]')
