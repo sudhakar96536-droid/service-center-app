@@ -100,10 +100,10 @@ def submit():
       
     service_mode = request.form.get("service_mode")
     def to_int(value):
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return None
     if service_mode != "COURIER":
     courier_name = None
     no_boxes = None
