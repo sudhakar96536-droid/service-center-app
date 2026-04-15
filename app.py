@@ -120,7 +120,28 @@ def submit():
         weight = request.form.get("weight") or None
         courier_remarks = request.form.get("courier_remarks") or None
     
+    warning_msg = ""
 
+    if service_mode == "COURIER":
+
+        missing_fields = []
+
+        if not courier_name:
+            missing_fields.append("Courier Name")
+
+        if not docket_no:
+            missing_fields.append("Docket Number")
+
+        if not no_boxes:
+            missing_fields.append("No. of Boxes")
+
+        if missing_fields:
+            missing_str = ", ".join(missing_fields)
+
+            warning_msg = f"""
+            COURIER DETAILS REQUIRED: {missing_str}.
+            YOUR COMPLAINT IS SAVED, BUT PLEASE UPDATE COURIER DETAILS.
+            """
     # ---------------- MULTI PRODUCT DATA ----------------
     products = request.form.getlist('product[]')
     qtys = request.form.getlist('qty[]')
@@ -301,7 +322,9 @@ def submit():
     <div class="text">
         Please keep this number for future communication and tracking.
     </div>
-
+    
+    {"<div class='warning'>" + warning_msg + "</div>" if warning_msg else ""}
+    
 </div>
 
 </body>
