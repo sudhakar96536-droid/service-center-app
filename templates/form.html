@@ -162,6 +162,7 @@
         <br>
 
         <button type="submit">Submit</button>
+        <br>
         <button type="button" onclick="confirmReset()" style="background:red;">Reset Form</button>
 
     </form>
@@ -201,7 +202,7 @@ function addProduct() {
     div.innerHTML = `
         <select name="product[]" class="product-select" required></select>
 
-        <input type="number" name="qty[]" value="1" min="1" required>
+        <input type="number" name="qty[]" placeholder="Qty" value="1" min="1" required>
         <input type="text" name="problem[]" placeholder="Problem Description">
         <input type="text" name="serial[]" placeholder="Serial Number">
 
