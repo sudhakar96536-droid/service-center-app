@@ -76,11 +76,55 @@
             font-size: 18px;
             margin-top: 20px;
         }
+        /* DESKTOP SIDE IMAGES */
+.side-img {
+    position: fixed;
+    top: 0;
+    width: 30%;
+    height: 100vh;
+    z-index: -1;
+}
+
+.left-img {
+    left: 0;
+}
+
+.right-img {
+    right: 0;
+}
+
+.side-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Make sure center stays above */
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hide images on mobile */
+@media (max-width: 768px) {
+    .side-img {
+        display: none;
+    }
+}
     </style>
 </head>
 
 <body>
+<!-- LEFT IMAGE -->
+<div class="side-img left-img">
+    <img src="{{ url_for('static', filename='1logo.jpg') }}">
+</div>
 
+<!-- RIGHT IMAGE -->
+<div class="side-img right-img">
+    <img src="{{ url_for('static', filename='1logo.jpg') }}">
+</div>
+    
 <div class="container">
 
     <div style="text-align:center;">
