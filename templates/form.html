@@ -95,8 +95,8 @@
 
 .side-img img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    object-fit: contain;   /* prevents zoom/crop */
+    transform: scale(0.5); /* reduce to 50% */
 }
 
 /* Make sure center stays above */
@@ -117,12 +117,12 @@
 <body>
 <!-- LEFT IMAGE -->
 <div class="side-img left-img">
-    <img src="{{ url_for('static', filename='1logo.jpg') }}">
+    <img src="{{ url_for('static', filename='1.jpg') }}">
 </div>
 
 <!-- RIGHT IMAGE -->
 <div class="side-img right-img">
-    <img src="{{ url_for('static', filename='1logo.jpg') }}">
+    <img src="{{ url_for('static', filename='2.jpg') }}">
 </div>
     
 <div class="container">
