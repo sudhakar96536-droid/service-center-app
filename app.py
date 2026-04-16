@@ -486,10 +486,10 @@ def admin():
         for i, col in enumerate(row):
             if i == len(row) - 1:  # invoice_url column
                 if col:
-                    if "/image/upload/" in col:
-                        view_url = col.replace("/image/upload/", "/raw/upload/fl_inline/")
-                    else:
+                    if col.lower().endswith(".pdf"):
                         view_url = col.replace("/upload/", "/upload/fl_inline/")
+                    else:
+                        view_url = col
                     html += f"<td><a href='{view_url}' target='_blank'>📄 View</a></td>"
                 else:
                     html += "<td>No File</td>"
