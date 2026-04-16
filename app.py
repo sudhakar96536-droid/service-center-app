@@ -2,6 +2,16 @@ from flask import Flask, render_template, request
 import psycopg2
 import os
 import json
+import cloudinary
+import cloudinary.uploader
+
+cloudinary.config(
+    cloud_name="dlcfbkt8c",
+    api_key="826689228987982",
+    api_secret="G4Y5b2DSAwDYq7Wpe5pwOaZ9xUo"
+)
+
+
 
 app = Flask(__name__)
 
