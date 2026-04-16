@@ -475,21 +475,24 @@ def admin():
         </tr>
     """
 
-    for row in data:
-        html += "<tr>"
-        for i, col in enumerate(row):
-            if i == len(row) - 1:  # last column = invoice_url
-                if col:
-                    html += f"<td><a href='{col}' target='_blank'>View Invoice</a></td>"
-                else:
-                    html += "<td>No File</td>"
+for row in data:
+    html += "<tr>"
+
+    for i, col in enumerate(row):
+        if i == len(row) - 1:  # invoice_url column
+            if col:
+                html += f"<td><a href='{col}' target='_blank'>📄 View</a></td>"
             else:
-                html += f"<td>{col}</td>"
-                html += "</tr>"
+                html += "<td>No File</td>"
+        else:
+            html += f"<td>{col if col else ''}</td>"
 
-        html += "</table></body></html>"
+    html += "</tr>"   # ✅ correct place
 
-    return html
+# ✅ close table AFTER loop
+html += "</table></body></html>"
+
+return html
 
 
 # =========================
