@@ -415,8 +415,8 @@ def admin():
 
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
-               remarks, email, gstin, product, qty, problem, serial, bill, date, invoice_url,
-               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks
+               remarks, email, gstin, product, qty, problem, serial, bill, date,
+               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, invoice_url
         FROM customers
         ORDER BY id DESC
     """)
@@ -460,7 +460,6 @@ def admin():
             <th>Serial</th>
             <th>Bill</th>
             <th>Date</th>
-            <th>Invoice</th>
             <th>Warranty</th>
             <th>Search Mobile</th>
             <th>Customer Type</th>
@@ -472,6 +471,7 @@ def admin():
             <th>No of Items</th>
             <th>Weight</th>
             <th>Courier Remarks</th>
+            <th>View bill</th>
         </tr>
     """
 
