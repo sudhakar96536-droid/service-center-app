@@ -191,7 +191,11 @@ def submit():
         if size > 1 * 1024 * 1024:
             return "File too large"
 
-        result = cloudinary.uploader.upload(file)
+        result = cloudinary.uploader.upload(
+            file,
+            resource_type="raw"
+        )
+        
         invoice_url = result['secure_url']
 
 
