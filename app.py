@@ -194,7 +194,7 @@ def submit():
         result = cloudinary.uploader.upload(
             file,
             resource_type="auto",
-            flags="attachment:false"
+            use_filename=True
         )
         
         invoice_url = result['secure_url']
