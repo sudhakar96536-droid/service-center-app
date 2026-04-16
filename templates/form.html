@@ -133,7 +133,7 @@
 
     <h2>Product Complaint Registration</h2>
 
-    <form id="myForm" action="/submit" method="POST">
+    <form id="myForm" action="/submit" method="POST" enctype="multipart/form-data">
 
         <!-- CUSTOMER TYPE -->
         <select name="customer_type" id="customer_type">
@@ -259,6 +259,11 @@ function addProduct() {
         <input type="text" name="bill[]" placeholder="Bill Number">
         <input type="date" name="date[]" required>
 
+         <!-- ✅ NEW: Invoice Upload -->
+        <label>Upload Invoice (Max 1MB)</label>
+        <input type="file" name="invoice[]" class="invoice-file" accept="image/*">
+
+
         <button type="button" onclick="this.parentElement.remove()">Remove</button>
     `;
 
@@ -293,6 +298,26 @@ document.getElementById("myForm").addEventListener("submit", function(e){
     let ok = confirm("Are you sure you want to submit?");
     if(!ok) e.preventDefault();
 
+});
+
+document.addEventListener("change", function(e) {
+
+    if (e.target.classList.contains("invoice-file")) {
+
+        let file = e.target.files[0];
+        let errorDiv = e.target.nextElementSibling;
+
+        if (!file) return;
+
+        let maxSize = 1 * 1024 * 1024; // 1MB
+
+        if (file.size > maxSize) {
+            errorDiv.innerText = "File must be less than 1 MB";
+            e.target.value = "";
+        } else {
+            errorDiv.innerText = "";
+        }
+    }
 });
 
 </script>
