@@ -195,7 +195,6 @@ def submit():
             file,
             resource_type="auto",
             use_filename=True,
-            flags="attachment"
         )
         
         invoice_url = result['secure_url']
@@ -488,14 +487,7 @@ def admin():
             if i == len(row) - 1:  # invoice column
 
                 if col:
-                    if col.lower().endswith(".pdf"):
-                        # FORCE correct PDF URL
-                        view_url = col.replace("/image/upload/", "/raw/upload/").replace("/upload/", "/upload/fl_inline/")
-                    else:
-                        # image → keep as is
-                        view_url = col
-
-                    html += f"<td><a href='{view_url}' target='_blank'>📄 View</a></td>"
+                    html += f"<td><a href='{col}' target='_blank'>📄 View Invoice</a></td>"
                 else:
                     html += "<td>No File</td>"
 
