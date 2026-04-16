@@ -161,6 +161,7 @@ def submit():
     serials = request.form.getlist('serial[]')
     bills = request.form.getlist('bill[]')
     dates = request.form.getlist('date[]')
+    files = request.files.getlist('invoice[]')
     warranties = request.form.getlist('warranty[]')
 
     if not products:
@@ -174,6 +175,28 @@ def submit():
 
     ref_number = f"REF-{ref_id:08d}"   # REF-00000001 format
 
+
+
+
+
+    invoice_url = ""
+
+    file = files[0]
+
+    if file and file.filename != '':
+        file.seek(0, 2)
+        size = file.tell()
+        file.seek(0)
+
+        if size > 1 * 1024 * 1024:
+            return "File too large"
+
+        result = cloudinary.uploader.upload(file)
+        invoice_url = result['secure_url']
+
+
+
+    
     # ======================================================
     # STEP 2: INSERT FIRST PRODUCT (WITH REF)
     # ======================================================
@@ -182,9 +205,9 @@ def submit():
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
-         search_mobile, customer_type,docket_date)
+         search_mobile, customer_type,docket_date,invoice_url)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
         mobile,
@@ -214,21 +237,40 @@ def submit():
 
         search_mobile,
         customer_type,
-        docket_date
+        docket_date,
+        invoice_url
     ))
 
     # ======================================================
     # STEP 3: INSERT REMAINING PRODUCTS (SAME REF)
     # ======================================================
     for i in range(1, len(products)):
+        invoice_url = ""
+
+        file = files[i]
+
+        if file and file.filename != '':
+            file.seek(0, 2)
+            size = file.tell()
+            file.seek(0)
+
+            if size > 1 * 1024 * 1024:
+                return "File too large"
+
+            result = cloudinary.uploader.upload(file)
+            invoice_url = result['secure_url']
+
+
+
+        
         cur.execute("""
             INSERT INTO customers
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
              email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
-             search_mobile, customer_type,docket_date)
+             search_mobile, customer_type,docket_date,invoice_url)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
             mobile,
@@ -259,7 +301,8 @@ def submit():
 
             search_mobile,
             customer_type,
-            docket_date
+            docket_date,
+            invoice_url
         ))
 
     conn.commit()
@@ -372,7 +415,7 @@ def admin():
 
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
-               remarks, email, gstin, product, qty, problem, serial, bill, date,
+               remarks, email, gstin, product, qty, problem, serial, bill, date, invoice_url,
                warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks
         FROM customers
         ORDER BY id DESC
@@ -417,6 +460,7 @@ def admin():
             <th>Serial</th>
             <th>Bill</th>
             <th>Date</th>
+            <th>Invoice</th>
             <th>Warranty</th>
             <th>Search Mobile</th>
             <th>Customer Type</th>
@@ -433,11 +477,17 @@ def admin():
 
     for row in data:
         html += "<tr>"
-        for col in row:
-            html += f"<td>{col}</td>"
-        html += "</tr>"
+        for i, col in enumerate(row):
+            if i == len(row) - 1:  # last column = invoice_url
+                if col:
+                    html += f"<td><a href='{col}' target='_blank'>View Invoice</a></td>"
+                else:
+                    html += "<td>No File</td>"
+            else:
+                html += f"<td>{col}</td>"
+                html += "</tr>"
 
-    html += "</table></body></html>"
+        html += "</table></body></html>"
 
     return html
 
