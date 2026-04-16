@@ -193,10 +193,9 @@ def submit():
 
         result = cloudinary.uploader.upload(
             file,
-            resource_type="raw",   # ✅ FORCE RAW for PDF
-            type="upload",         # ✅ PUBLIC access
-            access_mode="public",  # ✅ IMPORTANT
-            use_filename=True
+            resource_type="auto",
+            use_filename=True,
+            unique_filename=False   # ✅ keeps original filename with extension
         )
         
         invoice_url = result['secure_url']
