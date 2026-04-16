@@ -488,16 +488,10 @@ def admin():
 
                 if col:
                     if col.lower().endswith(".pdf"):
-
-                        if "/raw/upload/" in col:
-                            # PDF already raw → just add fl_inline correctly
-                            view_url = col.replace("/raw/upload/", "/raw/upload/fl_inline/")
-                        else:
-                            # normal case
-                            view_url = col.replace("/upload/", "/upload/fl_inline/")
-
+                        # FORCE correct PDF URL
+                        view_url = col.replace("/image/upload/", "/raw/upload/").replace("/upload/", "/upload/fl_inline/")
                     else:
-                        # image → no change
+                        # image → keep as is
                         view_url = col
 
                     html += f"<td><a href='{view_url}' target='_blank'>📄 View</a></td>"
