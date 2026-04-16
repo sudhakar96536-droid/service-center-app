@@ -484,23 +484,32 @@ def admin():
         html += "<tr>"
 
         for i, col in enumerate(row):
-            if i == len(row) - 1:  # invoice_url column
+            if i == len(row) - 1:  # invoice column
+
                 if col:
                     if col.lower().endswith(".pdf"):
-                        view_url = col.replace("/upload/", "/upload/fl_inline/")
+
+                        if "/raw/upload/" in col:
+                            # PDF already raw → just add fl_inline correctly
+                            view_url = col.replace("/raw/upload/", "/raw/upload/fl_inline/")
+                        else:
+                            # normal case
+                            view_url = col.replace("/upload/", "/upload/fl_inline/")
+
                     else:
+                        # image → no change
                         view_url = col
+
                     html += f"<td><a href='{view_url}' target='_blank'>📄 View</a></td>"
                 else:
                     html += "<td>No File</td>"
+
             else:
                 html += f"<td>{col if col else ''}</td>"
 
-        html += "</tr>"   # ✅ correct place
+        html += "</tr>"
 
-    # ✅ close table AFTER loop
     html += "</table></body></html>"
-
     return html
 
 
