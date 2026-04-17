@@ -127,6 +127,8 @@ def submit():
         weight = None
         courier_remarks = None
         courier_image_url = None
+        to_branch = None
+        branch_address = None
     else:
         courier_name = request.form.get("courier_name") or None
         no_boxes = to_int(request.form.get("no_boxes"))
