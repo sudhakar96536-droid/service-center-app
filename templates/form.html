@@ -212,26 +212,30 @@
 
         <br>
         
-        <div style="margin-top:15px; text-align:left;">
+<div class="consent-container" style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 10px;">
+    
+    <div style="display: flex; align-items: flex-start; margin-bottom: 12px;">
+        <input type="checkbox" id="marketing_consent" name="marketing_consent" style="margin-top: 5px; margin-right: 12px; transform: scale(1.2);">
+        <label for="marketing_consent" style="font-size: 15px; line-height: 1.4; color: #333;">
+            I Agree to receive offer details and marketing messages via <b>WhatsApp, Email, calls & SMS</b>. I understand I can opt-out at any time.
+        </label>
+    </div>
 
-            <label style="display:flex; align-items:flex-start; gap:8px;">
-                <input type="checkbox" name="tc_accepted" value="yes" style="margin-top:4px;">
+    <div style="font-size: 13px; color: #666; line-height: 1.5; margin-left: 28px;">
+        <p style="margin: 0 0 10px 0; font-style: italic;">
+            By clicking Submit, you consent to receive service updates and promotional messages from <b>Zebronics India Pvt. Ltd.</b> at the contact details provided. Consent is not a condition of service. Message and data rates may apply.
+        </p>
+        <p style="margin: 0; color: #444;">
+            <strong>Note: We may use this to share warranty-related benefits or future offers.</strong>
+        </p>
+    </div>
+
+    <!--<button type="submit" style="margin-top: 25px; padding: 10px 24px; background-color: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+        Submit Complaint
+    </button>-->
+
+</div>
         
-                <span>
-                    I Agree to receive offer details and marketing messages via WhatsApp, Email, calls & SMS.
-                    I understand I can opt-out at any time.
-                </span>
-            </label>
-
-            <p style="font-size:12px; color:#555; margin-top:8px;">
-                By clicking Submit, you consent to receive service updates and promotional messages from Zebronics India Pvt. Ltd. at the contact details provided. Consent is not a condition of service. Message and data rates may apply.
-            </p>
-
-            <p style="font-size:12px; color:#555;">
-                Note: We may use this to share warranty-related benefits or future offers.
-            </p>
-
-        </div>
         <br>
         <br>
         <button type="submit">Submit</button>
@@ -248,8 +252,8 @@
 
 <script>
     
-const branchData = {{ branches | tojson }};  <!-- 👈 ADD HERE -->
-const onlineList = {{ online_list | tojson }};   // 👈 ADD
+const branchData = {{ branches | tojson }};
+const onlineList = {{ online_list | tojson }};
     
 function initSelect2() {
     $('.product-select').select2({
