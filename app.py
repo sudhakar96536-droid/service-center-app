@@ -123,6 +123,7 @@ def submit():
         docket_date = None
         weight = None
         courier_remarks = None
+        courier_image_url = None
     else:
         courier_name = request.form.get("courier_name") or None
         no_boxes = to_int(request.form.get("no_boxes"))
@@ -131,6 +132,7 @@ def submit():
         docket_date = request.form.get("docket_date") or None
         weight = request.form.get("weight") or None
         courier_remarks = request.form.get("courier_remarks") or None
+        courier_image_file = request.files.get("courier_image")
     
     warning_msg = ""
 
@@ -153,6 +155,23 @@ def submit():
         if missing_fields:
             missing_str = ", ".join(missing_fields)
             warning_msg = f"COURIER DETAILS REQUIRED: {missing_str}. YOUR COMPLAINT IS SAVED, BUT PLEASE UPDATE COURIER DETAILS."
+
+    if service_mode == "COURIER" and courier_image_file and courier_image_file.filename != '':
+
+        courier_image_file.seek(0, 2)
+        size = courier_image_file.tell()
+        courier_image_file.seek(0)
+
+        if size > 2 * 1024 * 1024:
+            return "Courier image too large"
+
+        result = cloudinary.uploader.upload(
+            courier_image_file,
+            folder="courier_images",   # 👈 keeps images separate
+            resource_type="image"
+        )
+
+        courier_image_url = result['secure_url']
             
     # ---------------- MULTI PRODUCT DATA ----------------
     products = request.form.getlist('product[]')
@@ -213,9 +232,9 @@ def submit():
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
-         search_mobile, customer_type,docket_date,invoice_url)
+         search_mobile, customer_type,docket_date,invoice_url,courier_image_url)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
         mobile,
@@ -246,7 +265,8 @@ def submit():
         search_mobile,
         customer_type,
         docket_date,
-        invoice_url
+        invoice_url,
+        courier_image_url
     ))
 
     # ======================================================
@@ -276,9 +296,9 @@ def submit():
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
              email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
-             search_mobile, customer_type,docket_date,invoice_url)
+             search_mobile, customer_type,docket_date,invoice_url,courier_image_url)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
             mobile,
@@ -310,7 +330,8 @@ def submit():
             search_mobile,
             customer_type,
             docket_date,
-            invoice_url
+            invoice_url,
+            courier_image_url
         ))
 
     conn.commit()
@@ -424,7 +445,7 @@ def admin():
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
                remarks, email, gstin, product, qty, problem, serial, bill, date,
-               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, invoice_url
+               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, invoice_url, courier_image_url
         FROM customers
         ORDER BY id DESC
     """)
@@ -480,6 +501,7 @@ def admin():
             <th>Weight</th>
             <th>Courier Remarks</th>
             <th>View bill</th>
+            <th>View Packed Box</th>
         </tr>
     """
 
@@ -487,15 +509,17 @@ def admin():
         html += "<tr>"
 
         for i, col in enumerate(row):
-            if i == len(row) - 1:  # invoice column
-
+            if i == len(row) - 2:  # invoice
                 if col:
-                    html += f"<td><a href='{col}' target='_blank'>📄 View Invoice</a></td>"
+                    html += f"<td><a href='{col}' target='_blank'>📄 Invoice</a></td>"
                 else:
                     html += "<td>No File</td>"
 
-            else:
-                html += f"<td>{col if col else ''}</td>"
+            elif i == len(row) - 1:  # courier image
+                if col:
+                    html += f"<td><a href='{col}' target='_blank'>📦 View Image</a></td>"
+                else:
+                    html += "<td>No Image</td>"
 
         html += "</tr>"
 
