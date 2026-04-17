@@ -111,6 +111,56 @@
         display: none;
     }
 }
+
+.consent-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    background: #fafafa;
+    margin-top: 15px;
+}
+
+.card-checkbox {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    gap: 12px;
+}
+
+.card-checkbox input {
+    margin-top: 4px;
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 15px;
+    color: #222;
+}
+
+.card-text {
+    font-size: 14px;
+    color: #444;
+    margin-top: 4px;
+}
+
+.card-note {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+/* Optional: Highlight when checked */
+.card-checkbox input:checked + .card-content {
+    border-left: 4px solid green;
+    padding-left: 8px;
+}
     </style>
 </head>
 
@@ -212,27 +262,26 @@
 
         <br>
         
-<div class="consent-container" style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 10px;">
+<div class="consent-card">
     
-    <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px;">
-        <input type="checkbox" id="tc_accepted" name="tc_accepted" style="margin-top: 3px; margin-right: 12px; transform: scale(1.2);">
-        <label for="marketing_consent" style="font-size: 15px; line-height: 1.4; color: #333;">
-            I Agree to receive offer details and marketing messages via <b>WhatsApp, Email, calls & SMS</b>. I understand I can opt-out at any time.
-        </label>
-    </div>
+    <label class="card-checkbox">
+        <input type="checkbox" id="tc_accepted" name="tc_accepted">
+        
+        <div class="card-content">
+            <div class="card-title">
+                I Agree to receive offer details and marketing messages
+            </div>
 
-    <div style="font-size: 13px; color: #666; line-height: 1.5; margin-left: 0;">
-        <p style="margin: 0 0 10px 0; font-style: italic;">
-            By clicking Submit, you consent to receive service updates and promotional messages from <b>Zebronics India Pvt. Ltd.</b> at the contact details provided. Consent is not a condition of service. Message and data rates may apply.
-        </p>
-        <p style="margin: 0; color: #444;">
-            <strong>Note: We may use this to share warranty-related benefits or future offers.</strong>
-        </p>
-    </div>
+            <div class="card-text">
+                via <b>WhatsApp, Email, calls & SMS</b>. I understand I can opt-out at any time.
+            </div>
+        </div>
+    </label>
 
-    <!--<button type="submit" style="margin-top: 25px; padding: 10px 24px; background-color: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
-        Submit Complaint
-    </button>-->
+    <div class="card-note">
+        By clicking Submit, you consent to receive service updates and promotional messages from 
+        <b>Zebronics India Pvt. Ltd.</b> at the contact details provided. Consent is not a condition of service.
+    </div>
 
 </div>
         
