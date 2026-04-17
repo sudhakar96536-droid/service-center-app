@@ -203,6 +203,9 @@
             <label>Upload Packed Box Image (Max 1MB)</label>
             <input type="file" name="courier_image" id="courier_image" accept="image/*">
             <div class="error" id="courierFileError"></div>
+            <select name="to_branch" id="to_branch">
+                <option value="">Select Branch</option>
+            </select>
         </div>
 
         <br>
@@ -220,7 +223,9 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
-
+    
+const branchData = {{ branches | tojson }};  <!-- 👈 ADD HERE -->
+    
 function initSelect2() {
     $('.product-select').select2({
         width: '100%',
@@ -335,6 +340,28 @@ document.getElementById("courier_image").addEventListener("change", function () 
         errorDiv.innerText = "";
     }
 });
+
+document.querySelector("select[name='state']").addEventListener("change", function () {
+
+    let selectedState = this.value;
+    let branchDropdown = document.getElementById("to_branch");
+
+    // Clear old options
+    branchDropdown.innerHTML = '<option value="">Select Branch</option>';
+
+    if (selectedState && branchData[selectedState]) {
+
+        branchData[selectedState].forEach(item => {
+
+            let opt = document.createElement("option");
+            opt.value = item.branch;
+            opt.textContent = item.branch;
+
+            branchDropdown.appendChild(opt);
+        });
+    }
+});
+
     
 </script>
 
