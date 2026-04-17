@@ -500,8 +500,8 @@ def admin():
             <th>No of Items</th>
             <th>Weight</th>
             <th>Courier Remarks</th>
-            <th>View bill</th>
-            <th>View Packed Box</th>
+            <th>Bill</th>
+            <th>Packing</th>
         </tr>
     """
 
@@ -511,15 +511,15 @@ def admin():
         for i, col in enumerate(row):
             if i == len(row) - 2:  # invoice
                 if col:
-                    html += f"<td><a href='{col}' target='_blank'>📄 Invoice</a></td>"
+                    html += f"<td><a href='{col}' target='_blank'>📄View</a></td>"
                 else:
-                    html += "<td>No File</td>"
+                    html += "<td></td>"
 
             elif i == len(row) - 1:  # courier image
                 if col:
-                    html += f"<td><a href='{col}' target='_blank'>📦 View Image</a></td>"
+                    html += f"<td><a href='{col}' target='_blank'>📦View</a></td>"
                 else:
-                    html += "<td>No Image</td>"
+                    html += "<td></td>"
 
             else:
                 html += f"<td>{col if col else ''}</td>"
