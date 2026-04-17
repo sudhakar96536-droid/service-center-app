@@ -1,0 +1,203 @@
+{
+  "ASSAM": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    },
+    {
+      "branch": "Branch2",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "UTTAR PRADESH(GHAZIABAD)": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "GUJARAT": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "MAHARASHTRA(PUNE)": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "MAHARASHTRA(NAGPUR)": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "WEST BENGAL": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "UTTAR PRADESH(LUCKNOW)": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "CHHATTISGARH": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "PUNJAB": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "ODISHA": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "KARNATAKA": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "MAHARASHTRA(MUMBAI)": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "MADHYA PRADESH": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "KERALA": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "CHENNAI CENTERS": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "TAMIL NADU (UPCOUNTRY)": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "UTTARAKHAND": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "DELHI": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "JHARKHAND": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "RAJASTHAN": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "BIHAR": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "HARYANA": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "HIMACHAL PRADESH": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "JAMMU AND KASHMIR": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "TELANGANA": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "PUDUCHERRY": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "ANDHRA PRADESH": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Add2"
+    }
+  ],
+  "GOA": [
+    {
+      "branch": "Branch1",
+      "add1": "Add1",
+      "add2": "Addtwo"
+    }
+  ]
+}
