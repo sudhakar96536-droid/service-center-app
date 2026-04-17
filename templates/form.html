@@ -226,6 +226,7 @@
 <script>
     
 const branchData = {{ branches | tojson }};  <!-- 👈 ADD HERE -->
+const onlineList = {{ online_list | tojson }};   // 👈 ADD
     
 function initSelect2() {
     $('.product-select').select2({
@@ -256,6 +257,23 @@ function addProduct() {
         <select name="product[]" class="product-select" required></select>
 
         <input type="number" name="qty[]" placeholder="Qty" value="1" min="1" required>
+
+        <!-- PURCHASE TYPE -->
+        <select name="purchase_type[]" class="purchase-type">
+            <option value="">Purchase Type</option>
+            <option value="OFFLINE">Offline</option>
+            <option value="ONLINE">Online</option>
+        </select>
+
+        <!-- OFFLINE -->
+        <input type="text" name="shop_name[]" class="shop-name" placeholder="Shop Name" style="display:none;">
+    
+        <!-- ONLINE -->
+        <select name="online_platform[]" class="online-platform" style="display:none;">
+            <option value="">Select Platform</option>
+        </select>
+
+        
         <input type="text" name="problem[]" placeholder="Problem Description">
         <input type="text" name="serial[]" placeholder="Serial Number">
 
@@ -373,6 +391,38 @@ document.getElementById("to_branch").addEventListener("change", function () {
     let add1 = selectedOption.dataset.add1 || "";
 
     document.getElementById("branch_add1").value = add1;
+});
+
+document.addEventListener("change", function(e) {
+
+    if (e.target.classList.contains("purchase-type")) {
+
+        let parent = e.target.closest(".product-box");
+
+        let shopInput = parent.querySelector(".shop-name");
+        let onlineDropdown = parent.querySelector(".online-platform");
+
+        shopInput.style.display = "none";
+        onlineDropdown.style.display = "none";
+
+        if (e.target.value === "OFFLINE") {
+            shopInput.style.display = "block";
+        }
+
+        if (e.target.value === "ONLINE") {
+            onlineDropdown.style.display = "block";
+
+            // Load options
+            onlineDropdown.innerHTML = '<option value="">Select Platform</option>';
+
+            onlineList.forEach(item => {
+                let opt = document.createElement("option");
+                opt.value = item;
+                opt.textContent = item;
+                onlineDropdown.appendChild(opt);
+            });
+        }
+    }
 });
     
 </script>
