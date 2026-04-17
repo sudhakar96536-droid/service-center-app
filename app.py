@@ -192,6 +192,9 @@ def submit():
     dates = request.form.getlist('date[]')
     files = request.files.getlist('invoice[]')
     warranties = request.form.getlist('warranty[]')
+    purchase_types = request.form.getlist('purchase_type[]')
+    shop_names = request.form.getlist('shop_name[]')
+    online_platforms = request.form.getlist('online_platform[]')
 
     if not products:
         return "❌ No product added"
@@ -242,9 +245,9 @@ def submit():
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
-         search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address)
+         search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address,purchase_type,shop_name,online_platform)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
         mobile,
@@ -271,6 +274,7 @@ def submit():
         bills[0],
         dates[0],
         warranties[0],
+        
 
         search_mobile,
         customer_type,
@@ -278,7 +282,11 @@ def submit():
         invoice_url,
         courier_image_url,
         to_branch,
-        branch_address
+        branch_address,
+        purchase_types[0],
+        shop_names[0],
+        online_platforms[0]
+        
     ))
 
     # ======================================================
@@ -308,9 +316,9 @@ def submit():
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
              email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
-             search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address)
+             search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address,purchase_type,shop_name,online_platform)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
             mobile,
@@ -339,13 +347,18 @@ def submit():
             dates[i],
             warranties[i],
 
+
             search_mobile,
             customer_type,
             docket_date,
             invoice_url,
             courier_image_url,
             to_branch,
-            branch_address
+            branch_address,
+            purchase_types[i],
+            shop_names[i],
+            online_platforms[i]
+            
         ))
 
     conn.commit()
@@ -459,7 +472,7 @@ def admin():
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
                remarks, email, gstin, product, qty, problem, serial, bill, date,
-               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, to_branch, branch_address, invoice_url, courier_image_url
+               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, to_branch, branch_address, purchase_type, shop_name, online_platform, invoice_url, courier_image_url
         FROM customers
         ORDER BY id DESC
     """)
@@ -516,6 +529,9 @@ def admin():
             <th>Courier Remarks</th>
             <th>To Branch</th>
             <th>To Branch Address</th>
+            <th>Purchase Type</th>
+            <th>Offline Shop</th>
+            <th>Online Mode</th>
             <th>Bill</th>
             <th>Packing</th>
         </tr>
