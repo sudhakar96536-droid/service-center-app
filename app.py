@@ -521,6 +521,10 @@ def admin():
                 else:
                     html += "<td>No Image</td>"
 
+            else:
+                html += f"<td>{col if col else ''}</td>"
+
+        
         html += "</tr>"
 
     html += "</table></body></html>"
