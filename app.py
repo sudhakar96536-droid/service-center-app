@@ -112,7 +112,7 @@ def submit():
     pincode = request.form.get('pincode')
     state = request.form.get('state')
     remarks = request.form.get('remarks')
-    
+    tc_accepted = request.form.get("tc_accepted") == "yes"
       
     service_mode = request.form.get("service_mode")
     
@@ -245,9 +245,9 @@ def submit():
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
-         search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address,purchase_type,shop_name,online_platform)
+         search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address,purchase_type,shop_name,online_platform,tc_accepted)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
         mobile,
@@ -285,7 +285,8 @@ def submit():
         branch_address,
         purchase_types[0],
         shop_names[0],
-        online_platforms[0]
+        online_platforms[0],
+        tc_accepted
         
     ))
 
@@ -316,9 +317,9 @@ def submit():
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
              email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
-             search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address,purchase_type,shop_name,online_platform)
+             search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address,purchase_type,shop_name,online_platform,tc_accepted)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
             mobile,
@@ -357,7 +358,8 @@ def submit():
             branch_address,
             purchase_types[i],
             shop_names[i],
-            online_platforms[i]
+            online_platforms[i],
+            tc_accepted
             
         ))
 
@@ -472,7 +474,7 @@ def admin():
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
                remarks, email, gstin, product, qty, problem, serial, bill, date,
-               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, to_branch, branch_address, purchase_type, shop_name, online_platform, invoice_url, courier_image_url
+               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, to_branch, branch_address, purchase_type, shop_name, online_platform, tc_accepted, invoice_url, courier_image_url
         FROM customers
         ORDER BY id DESC
     """)
@@ -532,6 +534,7 @@ def admin():
             <th>Purchase Type</th>
             <th>Offline Shop</th>
             <th>Online Mode</th>
+            <th>TC Check</th>
             <th>Bill</th>
             <th>Packing</th>
         </tr>
