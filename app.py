@@ -136,6 +136,8 @@ def submit():
         weight = request.form.get("weight") or None
         courier_remarks = request.form.get("courier_remarks") or None
         courier_image_file = request.files.get("courier_image")
+        to_branch = request.form.get("to_branch")
+        branch_address = request.form.get("branch_address")
     
     warning_msg = ""
 
@@ -235,9 +237,9 @@ def submit():
         (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
          email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
          product, qty, problem, serial, bill, date, warranty,
-         search_mobile, customer_type,docket_date,invoice_url,courier_image_url)
+         search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
     """, (
         ref_number,
         mobile,
@@ -269,7 +271,9 @@ def submit():
         customer_type,
         docket_date,
         invoice_url,
-        courier_image_url
+        courier_image_url,
+        to_branch,
+        branch_address
     ))
 
     # ======================================================
@@ -299,9 +303,9 @@ def submit():
             (ref_number, mobile, name, address, address1, city, pincode, state, remarks,
              email, gstin, service_mode, courier_name, no_boxes, no_items, docket_no, weight, courier_remarks,
              product, qty, problem, serial, bill, date, warranty,
-             search_mobile, customer_type,docket_date,invoice_url,courier_image_url)
+             search_mobile, customer_type,docket_date,invoice_url,courier_image_url,to_branch,branch_address)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             ref_number,
             mobile,
@@ -334,7 +338,9 @@ def submit():
             customer_type,
             docket_date,
             invoice_url,
-            courier_image_url
+            courier_image_url,
+            to_branch,
+            branch_address
         ))
 
     conn.commit()
@@ -448,7 +454,7 @@ def admin():
     cur.execute("""
         SELECT id, ref_number, mobile, name, address, address1, city, pincode, state,
                remarks, email, gstin, product, qty, problem, serial, bill, date,
-               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, invoice_url, courier_image_url
+               warranty, search_mobile, customer_type, service_mode, courier_name, docket_no, docket_date, no_boxes, no_items, weight, courier_remarks, to_branch, branch_address, invoice_url, courier_image_url
         FROM customers
         ORDER BY id DESC
     """)
@@ -503,6 +509,8 @@ def admin():
             <th>No of Items</th>
             <th>Weight</th>
             <th>Courier Remarks</th>
+            <th>To Branch</th>
+            <th>To Branch Address</th>
             <th>Bill</th>
             <th>Packing</th>
         </tr>
