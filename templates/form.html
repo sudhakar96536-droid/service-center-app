@@ -125,22 +125,28 @@
     align-items: flex-start;
     gap: 12px;
     width: 100%;
+    cursor: pointer;
 }
 
+/* 🔥 FIX HERE */
 .card-checkbox input {
-    margin-top: 5px;
+    margin: 4px 0 0 0;   /* proper top alignment */
     transform: scale(1.2);
-    flex-shrink: 0;   /* 👈 prevents shrinking */
+    flex-shrink: 0;
 }
 
+/* 🔥 IMPORTANT */
 .card-content {
-    flex: 1;          /* 👈 takes full width */
+    flex: 1;
+    text-align: left;   /* prevents weird alignment */
 }
 
+/* 🔥 IMPROVED TEXT FLOW */
 .card-title {
     font-size: 15px;
     color: #222;
-    line-height: 1.4;
+    line-height: 1.5;
+    word-break: break-word;  /* prevents vertical breaking */
 }
 
 .card-text {
@@ -156,7 +162,7 @@
     line-height: 1.5;
 }
 
-/* Optional highlight */
+/* ✅ NICE HIGHLIGHT */
 .card-checkbox input:checked + .card-content {
     border-left: 4px solid green;
     padding-left: 8px;
