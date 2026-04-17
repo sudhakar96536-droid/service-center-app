@@ -200,7 +200,9 @@
             <input type="number" name="no_items" placeholder="No of Items">
             <input type="text" name="weight" placeholder="Weight">
             <input type="text" name="courier_remarks" placeholder="Courier Remarks">
-
+            <label>Upload Packed Box Image (Max 1MB)</label>
+            <input type="file" name="courier_image" id="courier_image" accept="image/*">
+            <div class="error" id="courierFileError"></div>
         </div>
 
         <br>
@@ -319,6 +321,20 @@ document.addEventListener("change", function(e) {
     }
 });
 
+document.getElementById("courier_image").addEventListener("change", function () {
+
+    let file = this.files[0];
+    let errorDiv = document.getElementById("courierFileError");
+
+    if (!file) return;
+
+    if (file.size > 1 * 1024 * 1024) {
+        errorDiv.innerText = "Max 1MB only";
+        this.value = "";
+    } else {
+        errorDiv.innerText = "";
+    }
+});
     
 </script>
 
