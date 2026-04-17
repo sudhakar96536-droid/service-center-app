@@ -82,7 +82,7 @@ def form():
         branches = json.load(b)
 
     with open('online.json') as o:
-    online_list = json.load(o)
+        online_list = json.load(o)
 
     return render_template('form.html', products=products, states=states,branches=branches,online_list=online_list)
 
