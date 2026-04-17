@@ -112,61 +112,7 @@
     }
 }
 
-.consent-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    background: #fafafa;
-    margin-top: 15px;
-}
 
-.card-checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    width: 100%;
-    cursor: pointer;
-}
-
-/* 🔥 FIX HERE */
-.card-checkbox input {
-    margin: 4px 0 0 0;   /* proper top alignment */
-    transform: scale(1.2);
-    flex-shrink: 0;
-}
-
-/* 🔥 IMPORTANT */
-.card-content {
-    flex: 1;
-    text-align: left;   /* prevents weird alignment */
-}
-
-/* 🔥 IMPROVED TEXT FLOW */
-.card-title {
-    font-size: 15px;
-    color: #222;
-    line-height: 1.5;
-    word-break: break-word;  /* prevents vertical breaking */
-}
-
-.card-text {
-    font-size: 14px;
-    color: #555;
-    margin-top: 4px;
-}
-
-.card-note {
-    font-size: 12px;
-    color: #666;
-    margin-top: 10px;
-    line-height: 1.5;
-}
-
-/* ✅ NICE HIGHLIGHT */
-.card-checkbox input:checked + .card-content {
-    border-left: 4px solid green;
-    padding-left: 8px;
-}
     </style>
 </head>
 
@@ -268,29 +214,29 @@
 
         <br>
         
-<div class="consent-card">
+
 
     <label class="card-checkbox">
         <input type="checkbox" id="tc_accepted" name="tc_accepted">
 
-        <div class="card-content">
-            <div class="card-title">
+        
+            
                 I Agree to receive offer details and marketing messages via 
                 <b>WhatsApp, Email, calls & SMS</b>.
-            </div>
+            
 
-            <div class="card-text">
+        
                 I understand I can opt-out at any time.
-            </div>
-        </div>
+        
+        
     </label>
 
-    <div class="card-note">
+
         By clicking Submit, you consent to receive service updates and promotional messages from 
         <b>Zebronics India Pvt. Ltd.</b>. Consent is not a condition of service.
-    </div>
 
-</div>
+
+
         
         <br>
         <br>
