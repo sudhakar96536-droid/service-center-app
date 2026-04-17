@@ -206,6 +206,7 @@
             <select name="to_branch" id="to_branch">
                 <option value="">Select Branch</option>
             </select>
+            <textarea id="branch_add1" placeholder="Branch Address" readonly rows="2"></textarea>
         </div>
 
         <br>
@@ -357,11 +358,22 @@ document.querySelector("select[name='state']").addEventListener("change", functi
             opt.value = item.branch;
             opt.textContent = item.branch;
 
+            // ✅ only add1
+            opt.dataset.add1 = item.add1;
+            
             branchDropdown.appendChild(opt);
         });
     }
 });
 
+document.getElementById("to_branch").addEventListener("change", function () {
+
+    let selectedOption = this.options[this.selectedIndex];
+
+    let add1 = selectedOption.dataset.add1 || "";
+
+    document.getElementById("branch_add1").value = add1;
+});
     
 </script>
 
