@@ -195,6 +195,7 @@
 
             <input type="text" name="courier_name" placeholder="Courier Name">
             <input type="text" name="docket_no" placeholder="Courier Docket No">
+            <label>Docket Date</label>
             <input type="date" name="docket_date" placeholder="Docket Date">
             <input type="number" name="no_boxes" placeholder="No of Boxes">
             <input type="number" name="no_items" placeholder="No of Items">
@@ -210,7 +211,24 @@
         </div>
 
         <br>
+        
+        <div style="display: flex; align-items: flex-start; margin-bottom: 12px;">
+            <input type="checkbox" id="tc_accepted" name="tc_accepted" style="margin-top: 5px; margin-right: 12px; transform: scale(1.2);">
+                <label for="marketing_consent" style="font-size: 15px; line-height: 1.4; color: #333;">
+                    I Agree to receive offer details and marketing messages via <b>WhatsApp, Email, calls & SMS</b>. I understand I can opt-out at any time.
+                </label>
+        </div>
 
+        <div style="font-size: 13px; color: #666; line-height: 1.5; margin-left: 28px;">
+            <p style="margin: 0 0 10px 0; font-style: italic;">
+                By clicking Submit, you consent to receive service updates and promotional messages from <b>Zebronics India Pvt. Ltd.</b> at the contact details provided. Consent is not a condition of service. Message and data rates may apply.
+            </p>
+            <p style="margin: 0; color: #444;">
+                <strong>Note: We may use this to share warranty-related benefits or future offers.</strong>
+            </p>
+        </div>
+        <br>
+        <br>
         <button type="submit">Submit</button>
         <br>
         <br>
@@ -282,7 +300,8 @@ function addProduct() {
             <option value="OUT OF WARRANTY">OUT OF WARRANTY</option>
         </select>
 
-        <input type="text" name="bill[]" placeholder="Bill Number">
+        <input type="text" name="bill[]" placeholder="Bill Number (As per Purchase Bill)">
+        <label>Bill Date</label>
         <input type="date" name="date[]" required>
 
         <!-- ✅ NEW -->
