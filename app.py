@@ -94,7 +94,7 @@ def get_customer():
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT name, address, address1, city, pincode, state
+        SELECT name, address, address1, city, pincode, state, email, gstin
         FROM customers
         WHERE mobile = %s
         ORDER BY id DESC
@@ -114,7 +114,10 @@ def get_customer():
             "address1": row[2],
             "city": row[3],
             "pincode": row[4],
-            "state": row[5]
+            "state": row[5],
+            "email": row[6],
+            "gstin": row[7]
+            
         }
     else:
         return {"found": False}
