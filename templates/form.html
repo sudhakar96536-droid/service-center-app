@@ -116,8 +116,13 @@
     color: red;
     font-weight: bold;
 }
-        
 
+.remove-btn {
+    width: 25%;
+    background: red;
+    float: right;
+    margin-top: 10px;
+}        
     </style>
 </head>
 
@@ -208,7 +213,7 @@
             <input type="date" name="docket_date" placeholder="Docket Date">
             <input type="number" name="no_boxes" placeholder="No of Boxes">
             <input type="number" name="no_items" placeholder="No of Items">
-            <input type="text" name="weight" placeholder="Weight">
+            <input type="text" name="weight" placeholder="Weight"><lABEL>KGS</lABEL>
             <input type="text" name="courier_remarks" placeholder="Courier Remarks">
             <label>Upload Packed Box Image (Max 1MB)</label>
             <input type="file" name="courier_image" id="courier_image" accept="image/*">
@@ -305,7 +310,7 @@ function addProduct() {
         <input type="text" name="shop_name[]" class="shop-name" placeholder="Shop Name *" style="display:none;">
     
         <!-- ONLINE -->
-        <select name="online_platform[]" class="online-platform" style="display:none;">
+        <select name="online_platform[]" class="online-platform" placeholder="Select Platform *" style="display:none;">
             <option value="">Select Platform *</option>
         </select>
 
@@ -329,7 +334,7 @@ function addProduct() {
         <div class="error file-error"></div>
 
 
-        <button type="button" onclick="this.parentElement.remove()">Remove</button>
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
     `;
 
     document.getElementById("productList").appendChild(div);
