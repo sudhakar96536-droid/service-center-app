@@ -288,7 +288,7 @@ function addProduct() {
         <input type="number" name="qty[]" placeholder="Qty" value="1" min="1" required>
 
         <!-- PURCHASE TYPE -->
-        <select name="purchase_type[]" class="purchase-type">
+        <select name="purchase_type[]" class="purchase-type" required>
             <option value="">Purchase Type</option>
             <option value="OFFLINE">Offline</option>
             <option value="ONLINE">Online</option>
@@ -303,21 +303,21 @@ function addProduct() {
         </select>
 
         
-        <input type="text" name="problem[]" placeholder="Problem Description">
+        <input type="text" name="problem[]" placeholder="Problem Description" required>
         <input type="text" name="serial[]" placeholder="Serial Number">
 
-        <select name="warranty[]">
+        <select name="warranty[]" required>
             <option value="UNDER WARRANTY">UNDER WARRANTY</option>
             <option value="OUT OF WARRANTY">OUT OF WARRANTY</option>
         </select>
 
-        <input type="text" name="bill[]" placeholder="Bill Number (As per Purchase Bill)">
+        <input type="text" name="bill[]" placeholder="Bill Number (As per Purchase Bill)" required>
         <label>Bill Date</label>
         <input type="date" name="date[]" required>
 
         <!-- ✅ NEW -->
         <label>Upload Invoice (Max 1MB)</label>
-        <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf">
+        <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf" required>
         <div class="error file-error"></div>
 
 
