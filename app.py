@@ -112,7 +112,7 @@ def submit():
     pincode = request.form.get('pincode')
     state = request.form.get('state')
     remarks = request.form.get('remarks')
-    tc_accepted = request.form.get("tc_accepted") == "yes"
+    tc_accepted = "YES" if request.form.get("tc_accepted") else "NO"
       
     service_mode = request.form.get("service_mode")
     
