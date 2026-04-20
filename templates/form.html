@@ -197,8 +197,8 @@
         </select>
 
         <!-- EMAIL / GST -->
-        <input type="email" name="email" placeholder="Email">
-        <input type="text" name="gstin" placeholder="GSTIN">
+        <input type="email" id="email" name="email" placeholder="Email">
+        <input type="text" id="gstin" name="gstin" placeholder="GSTIN">
 
         <!-- REMARKS -->
         <input type="text" name="remarks" placeholder="Remarks">
@@ -533,6 +533,8 @@ document.getElementById("mobile").addEventListener("blur", function() {
                     document.getElementById("address1").value = data.address1 || "";
                     document.getElementById("city").value = data.city || "";
                     document.getElementById("pincode").value = data.pincode || "";
+                    document.getElementById("email").value = data.email || "";
+                    document.getElementById("gstin").value = data.gstin || "";
 
                     // ✅ state handling
                     let stateDropdown = document.getElementById("state");
