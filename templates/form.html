@@ -523,17 +523,23 @@ document.getElementById("mobile").addEventListener("blur", function() {
 
             if (data.found) {
 
-                let confirmFill = confirm("Customer already exists. Load details?");
-
                 if (confirmFill) {
+
                     document.getElementById("name").value = data.name || "";
                     document.getElementById("address").value = data.address || "";
                     document.getElementById("address1").value = data.address1 || "";
                     document.getElementById("city").value = data.city || "";
                     document.getElementById("pincode").value = data.pincode || "";
-                    document.getElementById("state").value = data.state || "";
+
+                    // safer state handling
+                    let stateDropdown = document.getElementById("state");
+                    for (let i = 0; i < stateDropdown.options.length; i++) {
+                        if (stateDropdown.options[i].value === data.state) {
+                            stateDropdown.selectedIndex = i;
+                            break;
+                        }
+                    }
                 }
-            }
         });
 });
     
