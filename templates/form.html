@@ -523,6 +523,9 @@ document.getElementById("mobile").addEventListener("blur", function() {
 
             if (data.found) {
 
+                // ✅ define confirm here
+                let confirmFill = confirm("Customer already exists. Load details?");
+
                 if (confirmFill) {
 
                     document.getElementById("name").value = data.name || "";
@@ -531,7 +534,7 @@ document.getElementById("mobile").addEventListener("blur", function() {
                     document.getElementById("city").value = data.city || "";
                     document.getElementById("pincode").value = data.pincode || "";
 
-                    // safer state handling
+                    // ✅ state handling
                     let stateDropdown = document.getElementById("state");
                     for (let i = 0; i < stateDropdown.options.length; i++) {
                         if (stateDropdown.options[i].value === data.state) {
@@ -540,9 +543,9 @@ document.getElementById("mobile").addEventListener("blur", function() {
                         }
                     }
                 }
+            }
         });
-});
-    
+});    
 </script>
 
 </body>
