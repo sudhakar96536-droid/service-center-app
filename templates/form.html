@@ -145,8 +145,8 @@
             * indicates required fields
         </p>
         <!-- CUSTOMER TYPE -->
-        <select name="customer_type" id="customer_type">
-            <option value="">Select Customer Type</option>
+        <select name="customer_type" id="customer_type" required>
+            <option value="">Select Customer Type *</option>
             <option value="DIRECT CUSTOMER">DIRECT CUSTOMER</option>
             <option value="PARTNERS">PARTNERS</option>
         </select>
@@ -302,11 +302,11 @@ function addProduct() {
         </select>
 
         <!-- OFFLINE -->
-        <input type="text" name="shop_name[]" class="shop-name" placeholder="Shop Name" style="display:none;">
+        <input type="text" name="shop_name[]" class="shop-name" placeholder="Shop Name *" style="display:none;">
     
         <!-- ONLINE -->
         <select name="online_platform[]" class="online-platform" style="display:none;">
-            <option value="">Select Platform</option>
+            <option value="">Select Platform *</option>
         </select>
 
         
