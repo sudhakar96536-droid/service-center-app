@@ -112,6 +112,14 @@
     }
 }
 
+#tc_accepted1 {
+  display: inline-block;
+}
+
+.parent-container {
+  text-align: left !important;
+}
+
 
     </style>
 </head>
@@ -194,8 +202,11 @@
         </select>
 
         <div id="courierBox">
+            
             <input type="checkbox" id="tc_accepted1" name="tc_accepted1">
+            <div class="parent-container">
             <input type="text" name="courier_name" placeholder="Courier Name">
+            </div>
             <input type="text" name="docket_no" placeholder="Courier Docket No">
             <label>Docket Date</label>
             <input type="date" name="docket_date" placeholder="Docket Date">
