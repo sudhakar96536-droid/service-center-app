@@ -510,6 +510,32 @@ document.addEventListener("change", function(e) {
         }
     }
 });
+
+document.getElementById("mobile").addEventListener("blur", function() {
+
+    let mobile = this.value;
+
+    if (mobile.length < 10) return;
+
+    fetch(`/get-customer?mobile=${mobile}`)
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.found) {
+
+                let confirmFill = confirm("Customer already exists. Load details?");
+
+                if (confirmFill) {
+                    document.getElementById("name").value = data.name || "";
+                    document.getElementById("address").value = data.address || "";
+                    document.getElementById("address1").value = data.address1 || "";
+                    document.getElementById("city").value = data.city || "";
+                    document.getElementById("pincode").value = data.pincode || "";
+                    document.getElementById("state").value = data.state || "";
+                }
+            }
+        });
+});
     
 </script>
 
