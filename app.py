@@ -86,7 +86,38 @@ def form():
 
     return render_template('form.html', products=products, states=states,branches=branches,online_list=online_list)
 
+@app.route("/get-customer")
+def get_customer():
+    mobile = request.args.get("mobile")
 
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT name, address, address1, city, pincode, state
+        FROM customers
+        WHERE mobile = %s
+        ORDER BY id DESC
+        LIMIT 1
+    """, (mobile,))
+
+    row = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if row:
+        return {
+            "found": True,
+            "name": row[0],
+            "address": row[1],
+            "address1": row[2],
+            "city": row[3],
+            "pincode": row[4],
+            "state": row[5]
+        }
+    else:
+        return {"found": False}
 # =========================
 # SUBMIT (MULTI PRODUCT SAFE + NO DUPLICATE REF)
 # =========================
