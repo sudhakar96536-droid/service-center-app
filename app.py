@@ -121,6 +121,8 @@ def submit():
             return int(value)
         except (TypeError, ValueError):
             return None
+
+    courier_image_url = None
     if service_mode != "COURIER":
         courier_name = None
         no_boxes = None
