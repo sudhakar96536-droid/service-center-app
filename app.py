@@ -148,6 +148,9 @@ def get_problems():
             json_product = str(row.get("Product/Spare Name", "")).strip().upper()
             selected_product = product.strip().upper()
 
+            print("JSON:", repr(json_product))
+            print("SELECTED:", repr(selected_product))
+            
             # normalize spaces
             json_product = " ".join(json_product.split())
             selected_product = " ".join(selected_product.split())
