@@ -529,6 +529,29 @@ document.getElementById("mobile").addEventListener("blur", function() {
             }
         });
 });    
+
+document.getElementById("customer_type").addEventListener("change", function () {
+
+    let isPartner = this.value === "PARTNERS";
+
+    document.querySelectorAll(".product-box").forEach(box => {
+
+        // Purchase Type
+        let purchaseType = box.querySelector(".purchase-type");
+        
+        // Serial Number input (name="serial[]")
+        let serialInput = box.querySelector("input[name='serial[]']");
+
+        if (isPartner) {
+            if (purchaseType) purchaseType.style.display = "none";
+            if (serialInput) serialInput.style.display = "none";
+        } else {
+            if (purchaseType) purchaseType.style.display = "block";
+            if (serialInput) serialInput.style.display = "block";
+        }
+    });
+});
+    
 </script>
 
 </body>
