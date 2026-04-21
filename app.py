@@ -121,6 +121,45 @@ def get_customer():
         }
     else:
         return {"found": False}
+
+
+
+
+
+@app.route("/get-problems")
+def get_problems():
+
+    product = request.args.get("product", "").upper()
+
+    with open("category.json") as f:
+        category_data = json.load(f)
+
+    with open("problems.json") as f:
+        problems_data = json.load(f)
+
+    category = None
+
+    # 🔍 find category (5th → 3rd column)
+    for row in category_data:
+        try:
+            if str(row[4]).upper() == product:
+                category = str(row[2]).upper()
+                break
+        except:
+            continue
+
+    result = []
+
+    # 🔍 find problems (2nd → 1st column)
+    if category:
+        for row in problems_data:
+            try:
+                if str(row[1]).upper() == category:
+                    result.append(row[0])
+            except:
+                continue
+
+    return {"problems": result}
 # =========================
 # SUBMIT (MULTI PRODUCT SAFE + NO DUPLICATE REF)
 # =========================
