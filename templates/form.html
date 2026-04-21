@@ -162,6 +162,33 @@
 
     <h2>Product Complaint Registration</h2>
 
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      
+      <div style="
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        {% if category == 'success' %}
+            background: #d4edda; color: #155724;
+        {% elif category == 'warning' %}
+            background: #fff3cd; color: #856404;
+        {% endif %}
+      ">
+        {{ message }}
+      </div>
+
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+    
+    
+
     <form id="myForm" action="/submit" method="POST" enctype="multipart/form-data">
         <p style="color:red; font-size:13px;">
             * indicates required fields
