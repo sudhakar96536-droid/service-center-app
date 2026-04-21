@@ -139,7 +139,7 @@ def get_problems():
 
     category = None
 
-    # 🔍 find category (5th → 3rd column)
+    # 🔍 STEP 1: find category
     for row in category_data:
         try:
             if str(row[4]).upper() == product:
@@ -150,14 +150,18 @@ def get_problems():
 
     result = []
 
-    # 🔍 find problems (2nd → 1st column)
+    # 🔍 STEP 2: match using KEYS (not index)
     if category:
-        for row in problems_data:
+        for item in problems_data:
             try:
-                if str(row[1]).upper() == category:
-                    result.append(row[0])
+                if item.get("Category", "").upper() == category:
+                    result.append(item.get("Defect Name"))
             except:
                 continue
+
+    print("PRODUCT:", product)
+    print("CATEGORY:", category)
+    print("RESULT:", result)
 
     return {"problems": result}
 # =========================
