@@ -332,7 +332,7 @@ def submit():
     for i in range(1, len(products)):
         invoice_url = ""
 
-        file = files[i]
+        file = files[i] if i < len(files) else None
 
         if file and file.filename != '':
             file.seek(0, 2)
