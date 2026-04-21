@@ -217,15 +217,6 @@
             <option value="SERVICE CENTRE">SERVICE CENTRE</option>
             <option value="COURIER">COURIER</option>
         </select>
-        
-        <hr>
-        
-        <h3>Products</h3>
-        <div id="productList"></div>
-
-        <button type="button" class="add-btn" onclick="addProduct()">+ Add Product</button>        
-
-        <hr>
 
         <div id="courierBox">
                              
@@ -246,6 +237,17 @@
             </select>
             <textarea name="branch_address" id="branch_add1" placeholder="Branch Address" readonly rows="6"></textarea>
         </div>
+        
+        <hr>
+        
+        <h3>Products</h3>
+        <div id="productList"></div>
+
+        <button type="button" class="add-btn" onclick="addProduct()">+ Add Product</button>        
+
+        <hr>
+
+        
 
         <br>
         
@@ -329,11 +331,11 @@ function addProduct() {
         </select>
 
         <input type="text" name="bill[]" placeholder="Bill Number * (As per Purchase Bill)" required>
-        <label name="l1">Bill Date *</label>
+        <label name="l1" class="l1">Bill Date *</label>
         <input type="date" name="date[]" required>
 
         <!-- ✅ NEW -->
-        <label name="l2">Upload Invoice * (Max 1MB (Images only))</label>
+        <label name="l2" class="l2">Upload Invoice * (Max 1MB (Images only))</label>
         <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf" required>
         <div class="error file-error"></div>
 
@@ -564,11 +566,11 @@ function applyPartnerRules() {
                 el.value = "";
             }
         });
-        let l1 = box.querySelector(".l1");
-        let l2 = box.querySelector(".l2");
+        let labels = box.querySelectorAll(".l1, .l2");
 
-        if (l1) l1.style.display = isPartner ? "none" : "";
-        if (l2) l2.style.display = isPartner ? "none" : "";
+        labels.forEach(lbl => {
+            lbl.style.display = isPartner ? "none" : "";
+        });
     });
 }
 
