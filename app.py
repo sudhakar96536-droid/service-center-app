@@ -145,10 +145,10 @@ def get_problems():
     # ✅ STEP 1: EXACT MATCH
     for row in category_data:
         try:
-            json_product = str(row[4]).strip().upper()
+            json_product = str(row.get("Product/Spare Name", "")).strip().upper()
             selected_product = product.strip().upper()
 
-            # 🔥 normalize spaces
+            # normalize spaces
             json_product = " ".join(json_product.split())
             selected_product = " ".join(selected_product.split())
 
@@ -156,7 +156,7 @@ def get_problems():
             print("SELECTED:", selected_product)
 
             if json_product == selected_product:
-                category = str(row[2]).strip().upper()
+                category = str(row.get("Category", "")).strip().upper()
                 print("✅ EXACT MATCH CATEGORY:", category)
                 break
 
