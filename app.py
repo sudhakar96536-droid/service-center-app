@@ -142,7 +142,7 @@ def get_problems():
     # 🔍 STEP 1: find category
     for row in category_data:
         try:
-            if str(row[4]).upper() == product:
+            if product in str(row[4]).upper():
                 category = str(row[2]).upper()
                 break
         except:
