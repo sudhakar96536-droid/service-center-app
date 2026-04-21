@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 import psycopg2
 import os
 import json
@@ -14,6 +14,7 @@ cloudinary.config(
 
 
 app = Flask(__name__)
+app.secret_key = "secret123"
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -403,84 +404,12 @@ def submit():
     cur.close()
     conn.close()
 
-    return f"""
-<html>
-<head>
-    <title>Complaint Registered</title>
-    <style>
-        body {{
-            font-family: Arial;
-            background: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }}
+    flash(f"Complaint Registered Successfully! Ref No: {ref_number}", "success")
 
-        .box {{
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
-            max-width: 600px;
-            text-align: center;
-        }}
+if warning_msg:
+    flash(warning_msg, "warning")
 
-        .title {{
-            font-size: 26px;
-            font-weight: bold;
-            color: #2e7d32;
-            margin-bottom: 15px;
-        }}
-
-        .text {{
-            font-size: 16px;
-            color: #333;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }}
-
-        .ref {{
-            font-size: 22px;
-            font-weight: bold;
-            color: #000;
-            margin-top: 10px;
-        }}
-
-        .note {{
-            font-size: 14px;
-            color: #777;
-            margin-top: 15px;
-        }}
-    </style>
-</head>
-
-<body>
-
-<div class="box">
-
-    <div class="title">Complaint Registered Successfully</div>
-
-    <div class="text">
-        Your service request has been received and is now being processed.
-    </div>
-
-    <div class="ref">
-        Reference Number: {ref_number}
-    </div>
-
-    <div class="text">
-        Please keep this number for future communication and tracking.
-    </div>
-    
-    {f"<div style='color:red;font-weight:bold;'>{warning_msg}</div>" if warning_msg else ''}
-    
-</div>
-
-</body>
-</html>
-"""
+return redirect(url_for('form'))
 
 @app.route("/search-products")
 def search_products():
