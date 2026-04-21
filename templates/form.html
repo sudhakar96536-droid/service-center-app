@@ -559,21 +559,36 @@ function applyPartnerRules() {
         fields.forEach(el => {
             if (!el) return;
 
+            // 🔥 1. Hide / show
             el.style.display = isPartner ? "none" : "";
+
+            // 🔥 2. Disable / enable input (IMPORTANT)
             el.disabled = isPartner;
 
-            if (isPartner && (el.tagName === "INPUT" || el.tagName === "SELECT")) {
-                el.value = "";
+            // 🔥 3. Handle required dynamically
+            if (isPartner) {
+                el.dataset.originalRequired = el.required; // store original state
+                el.required = false; // remove mandatory rule
+
+                // optional cleanup
+                if (el.tagName === "INPUT" || el.tagName === "SELECT") {
+                    el.value = "";
+                }
+            } else {
+                // restore required if it was originally required
+                if (el.dataset.originalRequired === "true") {
+                    el.required = true;
+                }
             }
         });
-        let labels = box.querySelectorAll(".l1, .l2");
 
-        labels.forEach(lbl => {
+        // Labels
+        box.querySelectorAll(".l1, .l2").forEach(lbl => {
             lbl.style.display = isPartner ? "none" : "";
         });
+
     });
 }
-
 document.getElementById("customer_type").addEventListener("change", function () {
     applyPartnerRules();
 });
