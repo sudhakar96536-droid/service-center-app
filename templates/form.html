@@ -268,7 +268,25 @@
 const branchData = {{ branches | tojson }};
 const onlineList = {{ online_list | tojson }};
     
-
+function initSelect2() {
+    $('.product-select').select2({
+        width: '100%',
+        placeholder: "Search Product",
+        allowClear: true,
+        minimumInputLength: 1,
+        ajax: {
+            url: "/search-products",
+            dataType: "json",
+            delay: 250,
+            data: function (params) {
+                return { q: params.term };
+            },
+            processResults: function (data) {
+                return { results: data.items };
+            }
+        }
+    });
+}
 
 function addProduct() {
 
@@ -295,11 +313,8 @@ function addProduct() {
             <option value="">Select Platform *</option>
         </select>
 
-        <!-- PROBLEM -->
-        <select name="problem[]" class="problem-select" required>
-            <option value="">Select Problem *</option>
-        </select>
-
+        
+        <input type="text" name="problem[]" placeholder="Problem Description *" required>
         <input type="text" name="serial[]" placeholder="Serial Number">
 
         <select name="warranty[]" required>
@@ -312,37 +327,18 @@ function addProduct() {
         <label>Bill Date *</label>
         <input type="date" name="date[]" required>
 
+        <!-- ✅ NEW -->
         <label>Upload Invoice * (Max 1MB (Images only))</label>
         <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf" required>
         <div class="error file-error"></div>
 
+
         <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
     `;
 
-    // ✅ STEP 1: ADD TO PAGE
     document.getElementById("productList").appendChild(div);
 
-    // ✅ STEP 2: APPLY SELECT2 FOR PRODUCT (AJAX SEARCH)
-    $(div).find('.product-select').select2({
-        width: '100%',
-        placeholder: "Search Product",
-        minimumInputLength: 1,
-        ajax: {
-            url: "/search-products",
-            dataType: "json",
-            delay: 250,
-            data: function (params) {
-                return { q: params.term };
-            },
-            processResults: function (data) {
-                return { results: data.items };
-            }
-        }
-    });
-
-    // ✅ STEP 3: APPLY SELECT2 FOR PROBLEM (SEARCH ONLY)
-    let problemDropdown = div.querySelector(".problem-select");
-    applySelect2Problem(problemDropdown);
+    initSelect2();
 }
 
     
@@ -531,47 +527,6 @@ document.getElementById("mobile").addEventListener("blur", function() {
                     }
                 }
             }
-        });
-});
-
-function applySelect2Problem(element) {
-    $(element).select2({
-        width: '100%',
-        placeholder: "Search Problem",
-        allowClear: true
-    });
-}
-
-$(document).on('select2:select', '.product-select', function (e) {
-
-    let product = e.params.data.id;
-
-    let parent = $(this).closest(".product-box");
-    let problemDropdown = parent.find(".problem-select");
-
-    // destroy select2
-    problemDropdown.select2('destroy');
-
-    // loading
-    problemDropdown.html('<option>Loading...</option>');
-
-    fetch(`/get-problems?product=${encodeURIComponent(product)}`)
-        .then(res => res.json())
-        .then(data => {
-
-            problemDropdown.html('<option value="">Select Problem *</option>');
-
-            data.problems.forEach(p => {
-                problemDropdown.append(`<option value="${p}">${p}</option>`);
-            });
-
-            // reapply select2
-            problemDropdown.select2({
-                width: '100%',
-                placeholder: "Search Problem",
-                allowClear: true
-            });
-
         });
 });    
 </script>
