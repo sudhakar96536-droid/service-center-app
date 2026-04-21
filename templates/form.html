@@ -339,6 +339,7 @@ function addProduct() {
     document.getElementById("productList").appendChild(div);
 
     initSelect2();
+    applyPartnerRules();
 }
 
     
@@ -530,9 +531,9 @@ document.getElementById("mobile").addEventListener("blur", function() {
         });
 });    
 
-document.getElementById("customer_type").addEventListener("change", function () {
+function applyPartnerRules() {
 
-    let isPartner = this.value === "PARTNERS";
+    let isPartner = document.getElementById("customer_type").value === "PARTNERS";
 
     document.querySelectorAll(".product-box").forEach(box => {
 
@@ -554,13 +555,15 @@ document.getElementById("customer_type").addEventListener("change", function () 
             el.style.display = isPartner ? "none" : "";
             el.disabled = isPartner;
 
-            // Optional cleanup
             if (isPartner && (el.tagName === "INPUT" || el.tagName === "SELECT")) {
                 el.value = "";
             }
         });
-
     });
+}
+
+document.getElementById("customer_type").addEventListener("change", function () {
+    applyPartnerRules();
 });
     
 </script>
