@@ -129,7 +129,7 @@ def get_customer():
 @app.route("/get-problems")
 def get_problems():
 
-    product = request.args.get("product", "").upper()
+    product = request.args.get("product", "").strip().upper()
 
     with open("category.json") as f:
         category_data = json.load(f)
@@ -137,29 +137,44 @@ def get_problems():
     with open("problems.json") as f:
         problems_data = json.load(f)
 
-    print("👉 SELECTED PRODUCT:", product)
+    print("\n==========================")
+    print("SELECTED PRODUCT:", product)
 
     category = None
 
+    # ✅ STEP 1: FIND CATEGORY (LOOSE MATCH)
     for row in category_data:
-        print("CHECK ROW:", row)
-
         try:
-            if product.strip() == str(row[4]).strip().upper():
-                category = str(row[2]).upper()
-                print("✅ MATCH FOUND CATEGORY:", category)
+            row_text = " ".join([str(x) for x in row]).upper()
+
+            if product in row_text:
+                category = str(row[2]).strip().upper()
+                print("✅ CATEGORY FOUND:", category)
                 break
+
         except Exception as e:
             print("ERROR:", e)
 
+    # ❌ IF NOT FOUND
+    if not category:
+        print("❌ CATEGORY NOT FOUND")
+        return {"problems": []}
+
+    # ✅ STEP 2: GET PROBLEMS
     result = []
 
-    if category:
-        for item in problems_data:
-            if item.get("Category", "").upper() == category:
+    for item in problems_data:
+        try:
+            item_category = item.get("Category", "").strip().upper()
+
+            if item_category == category:
                 result.append(item.get("Defect Name"))
 
-    print("FINAL RESULT:", result)
+        except Exception as e:
+            print("ERROR:", e)
+
+    print("FINAL PROBLEMS:", result)
+    print("==========================\n")
 
     return {"problems": result}
 # =========================
