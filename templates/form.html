@@ -536,19 +536,30 @@ document.getElementById("customer_type").addEventListener("change", function () 
 
     document.querySelectorAll(".product-box").forEach(box => {
 
-        // Purchase Type
-        let purchaseType = box.querySelector(".purchase-type");
-        
-        // Serial Number input (name="serial[]")
-        let serialInput = box.querySelector("input[name='serial[]']");
+        let fields = box.querySelectorAll(`
+            .purchase-type,
+            .online-platform,
+            .invoice-file,
+            input[name='serial[]'],
+            input[name='shop_name[]'],
+            input[name='problem[]'],
+            select[name='warranty[]'],
+            input[name='bill[]'],
+            input[name='date[]']
+        `);
 
-        if (isPartner) {
-            if (purchaseType) purchaseType.style.display = "none";
-            if (serialInput) serialInput.style.display = "none";
-        } else {
-            if (purchaseType) purchaseType.style.display = "block";
-            if (serialInput) serialInput.style.display = "block";
-        }
+        fields.forEach(el => {
+            if (!el) return;
+
+            el.style.display = isPartner ? "none" : "";
+            el.disabled = isPartner;
+
+            // Optional cleanup
+            if (isPartner && (el.tagName === "INPUT" || el.tagName === "SELECT")) {
+                el.value = "";
+            }
+        });
+
     });
 });
     
