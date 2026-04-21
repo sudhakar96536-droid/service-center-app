@@ -205,15 +205,11 @@
 
         <hr>
 
-        <!-- PRODUCTS -->
-        <h3>Products</h3>
-        <div id="productList"></div>
+        
 
-        <button type="button" class="add-btn" onclick="addProduct()">+ Add Product</button>
 
         <hr>
 
-        <!-- SERVICE MODE -->
         <h3>Service Mode</h3>
 
         <select name="service_mode" id="service_mode" required>
@@ -221,6 +217,15 @@
             <option value="SERVICE CENTRE">SERVICE CENTRE</option>
             <option value="COURIER">COURIER</option>
         </select>
+        
+        <hr>
+        
+        <h3>Products</h3>
+        <div id="productList"></div>
+
+        <button type="button" class="add-btn" onclick="addProduct()">+ Add Product</button>        
+
+        <hr>
 
         <div id="courierBox">
                              
@@ -324,11 +329,11 @@ function addProduct() {
         </select>
 
         <input type="text" name="bill[]" placeholder="Bill Number * (As per Purchase Bill)" required>
-        <label>Bill Date *</label>
+        <label name="l1">Bill Date *</label>
         <input type="date" name="date[]" required>
 
         <!-- ✅ NEW -->
-        <label>Upload Invoice * (Max 1MB (Images only))</label>
+        <label name="l2">Upload Invoice * (Max 1MB (Images only))</label>
         <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf" required>
         <div class="error file-error"></div>
 
@@ -559,6 +564,11 @@ function applyPartnerRules() {
                 el.value = "";
             }
         });
+        let l1 = box.querySelector(".l1");
+        let l2 = box.querySelector(".l2");
+
+        if (l1) l1.style.display = isPartner ? "none" : "";
+        if (l2) l2.style.display = isPartner ? "none" : "";
     });
 }
 
