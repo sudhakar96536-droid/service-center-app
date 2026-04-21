@@ -313,8 +313,9 @@ function addProduct() {
             <option value="">Select Platform *</option>
         </select>
 
-        
-        <input type="text" name="problem[]" placeholder="Problem Description *" required>
+        <select name="problem[]" class="problem-select" required>
+            <option value="">Select Problem *</option>
+        </select>
         <input type="text" name="serial[]" placeholder="Serial Number">
 
         <select name="warranty[]" required>
@@ -337,7 +338,9 @@ function addProduct() {
     `;
 
     document.getElementById("productList").appendChild(div);
-
+    let problemDropdown = div.querySelector(".problem-select");
+    applySelect2Problem(problemDropdown);
+    
     initSelect2();
 }
 
@@ -528,7 +531,60 @@ document.getElementById("mobile").addEventListener("blur", function() {
                 }
             }
         });
-});    
+});
+
+function applySelect2Problem(dropdown) {
+    $(dropdown).select2({
+        width: '100%',
+        placeholder: "Search Problem",
+        allowClear: true
+    });
+}    
+
+$(document).on('select2:select', '.product-select', function (e) {
+
+    // 1. Get selected product
+    let product = e.params.data.id;
+
+    // 2. Find current product box
+    let parentBox = $(this).closest(".product-box");
+
+    // 3. Find problem dropdown inside that box
+    let problemDropdown = parentBox.find(".problem-select");
+
+    // 4. Destroy old select2 (VERY IMPORTANT)
+    problemDropdown.select2('destroy');
+
+    // 5. Show loading
+    problemDropdown.html('<option>Loading...</option>');
+
+    // 6. Call backend
+    fetch(`/get-problems?product=${encodeURIComponent(product)}`)
+        .then(response => response.json())
+        .then(data => {
+
+            // 7. Clear old options
+            problemDropdown.html('<option value="">Select Problem *</option>');
+
+            // 8. Add new options
+            data.problems.forEach(function(problem) {
+
+                let option = new Option(problem, problem, false, false);
+                problemDropdown.append(option);
+
+            });
+
+            // 9. Reapply Select2
+            problemDropdown.select2({
+                width: '100%',
+                placeholder: "Search Problem",
+                allowClear: true
+            });
+
+        });
+
+});
+    
 </script>
 
 </body>
