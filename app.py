@@ -137,31 +137,29 @@ def get_problems():
     with open("problems.json") as f:
         problems_data = json.load(f)
 
+    print("👉 SELECTED PRODUCT:", product)
+
     category = None
 
-    # 🔍 STEP 1: find category
     for row in category_data:
+        print("CHECK ROW:", row)
+
         try:
-            if product in str(row[4]).upper():
+            if product.strip() == str(row[4]).strip().upper():
                 category = str(row[2]).upper()
+                print("✅ MATCH FOUND CATEGORY:", category)
                 break
-        except:
-            continue
+        except Exception as e:
+            print("ERROR:", e)
 
     result = []
 
-    # 🔍 STEP 2: match using KEYS (not index)
     if category:
         for item in problems_data:
-            try:
-                if item.get("Category", "").upper() == category:
-                    result.append(item.get("Defect Name"))
-            except:
-                continue
+            if item.get("Category", "").upper() == category:
+                result.append(item.get("Defect Name"))
 
-    print("PRODUCT:", product)
-    print("CATEGORY:", category)
-    print("RESULT:", result)
+    print("FINAL RESULT:", result)
 
     return {"problems": result}
 # =========================
