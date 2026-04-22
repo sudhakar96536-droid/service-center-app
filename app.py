@@ -496,6 +496,13 @@ def submit():
     
 </div>
 
+<script>
+    sessionStorage.setItem("clearProducts", "true");
+    setTimeout(function() {{
+        window.location.href = "/";
+    }}, 1500); // redirect after 1.5 sec
+</script>
+
 </body>
 </html>
 """
