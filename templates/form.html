@@ -562,6 +562,7 @@ document.getElementById("mobile").addEventListener("blur", function() {
                             break;
                         }
                     }
+                    stateDropdown.dispatchEvent(new Event('change'));
                 }
             }
         });
