@@ -246,10 +246,11 @@ def submit():
 
 
 
+    files = request.files.getlist('invoice[]')
+    
+    file = files[0] if files else None
 
     invoice_url = ""
-
-    file = files[0]
 
     if file and file.filename != '':
         file.seek(0, 2)
