@@ -130,6 +130,9 @@ def submit():
     conn = get_conn()
     cur = conn.cursor()
 
+    def safe(lst, i, default=""):
+        return lst[i] if i < len(lst) else default
+
     # ---------------- CUSTOMER INFO ----------------
     search_mobile = request.form.get('search_mobile')
     customer_type = request.form.get('customer_type')
@@ -306,11 +309,11 @@ def submit():
         courier_remarks,
         products[0],
         qtys[0] if qtys else 1,
-        problems[0],
-        serials[0],
-        bills[0],
-        dates[0],
-        warranties[0],
+        safe(problems, 0),
+        safe(serials, 0),
+        safe(bills, 0),
+        safe(dates, 0),
+        safe(warranties, 0),
         
 
         search_mobile,
@@ -320,9 +323,9 @@ def submit():
         courier_image_url,
         to_branch,
         branch_address,
-        purchase_types[0],
-        shop_names[0],
-        online_platforms[0],
+        safe(purchase_types, 0),
+        safe(shop_names, 0),
+        safe(online_platforms, 0),
         tc_accepted
         
     ))
@@ -387,11 +390,11 @@ def submit():
             courier_remarks,
             products[i],
             qtys[i] if i < len(qtys) else 1,
-            problems[i],
-            serials[i],
-            bills[i],
-            dates[i],
-            warranties[i],
+            safe(problems, i),
+            safe(serials, i),
+            safe(bills, i),
+            safe(dates, i),
+            safe(warranties, i),
 
 
             search_mobile,
@@ -401,9 +404,9 @@ def submit():
             courier_image_url,
             to_branch,
             branch_address,
-            purchase_types[i],
-            shop_names[i],
-            online_platforms[i],
+            safe(purchase_types, i),
+            safe(shop_names, i),
+            safe(online_platforms, i),
             tc_accepted
             
         ))
