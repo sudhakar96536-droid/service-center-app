@@ -506,7 +506,7 @@ Your service request has been received and is being processed.
 `;
 
     // ✅ Create file
-    let blob = new Blob([content], { type: "text/plain" });
+    let blob = new Blob([content], {{ type: "text/plain" }});
 
     let link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -518,9 +518,9 @@ Your service request has been received and is being processed.
     // ✅ Then redirect back
     sessionStorage.setItem("clearProducts", "true");
 
-    setTimeout(function() {
+    setTimeout(function() {{
         window.location.href = "/";
-    }, 10000);
+    }}, 1500);
 </script>
 
 </body>
