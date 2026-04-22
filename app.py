@@ -250,7 +250,24 @@ def submit():
     cur.execute("SELECT nextval('ref_seq')")
     ref_id = cur.fetchone()[0]
 
-    ref_number = f"REF-{ref_id:08d}"   # REF-00000001 format
+    # 🔥 CUSTOMER TYPE LETTER
+    if customer_type == "DIRECT CUSTOMER":
+        cust_letter = "C"
+    elif customer_type == "PARTNERS":
+        cust_letter = "P"
+    else:
+        cust_letter = "X"  # fallback safety
+
+    # 🔥 SERVICE MODE LETTER
+    if service_mode == "SERVICE CENTRE":
+        service_letter = "S"
+    elif service_mode == "COURIER":
+        service_letter = "C"
+    else:
+        service_letter = "X"  # fallback safety
+
+    
+    ref_number = f"R{cust_letter}{service_letter}-{ref_id:08d}"
 
 
 
