@@ -133,6 +133,9 @@ def submit():
     def safe(lst, i, default=""):
         return lst[i] if i < len(lst) else default
 
+    def clean_date(value):
+        return value if value else None
+
     # ---------------- CUSTOMER INFO ----------------
     search_mobile = request.form.get('search_mobile')
     customer_type = request.form.get('customer_type')
@@ -312,7 +315,7 @@ def submit():
         safe(problems, 0),
         safe(serials, 0),
         safe(bills, 0),
-        safe(dates, 0),
+        clean_date(safe(dates, 0)),
         safe(warranties, 0),
         
 
@@ -393,7 +396,7 @@ def submit():
             safe(problems, i),
             safe(serials, i),
             safe(bills, i),
-            safe(dates, i),
+            clean_date(safe(dates, i)),
             safe(warranties, i),
 
 
