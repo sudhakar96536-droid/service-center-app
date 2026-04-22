@@ -381,7 +381,17 @@ function addProduct() {
 
 
 window.onload = function () {
-    addProduct();
+
+    if (sessionStorage.getItem("clearProducts") === "true") {
+
+        document.getElementById("productList").innerHTML = "";
+        addProduct();
+
+        sessionStorage.removeItem("clearProducts");
+
+    } else {
+        addProduct();
+    }
 };
 
 document.getElementById("service_mode").addEventListener("change", function () {
