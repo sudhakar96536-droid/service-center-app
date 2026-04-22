@@ -334,7 +334,7 @@ def submit():
 
         file = files[i] if i < len(files) else None
 
-        if file and file.filename != '':
+        if file and file.filename:
             file.seek(0, 2)
             size = file.tell()
             file.seek(0)
@@ -342,7 +342,15 @@ def submit():
             if size > 1 * 1024 * 1024:
                 return "File too large"
 
-            result = cloudinary.uploader.upload(file)
+            result = cloudinary.uploader.upload(
+                file,
+                resource_type="raw",
+                type="upload",
+                access_mode="public",
+                use_filename=True,
+                unique_filename=False
+            )
+
             invoice_url = result['secure_url']
 
 
