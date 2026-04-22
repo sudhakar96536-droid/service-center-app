@@ -267,7 +267,7 @@ def submit():
         service_letter = "X"  # fallback safety
 
     
-    ref_number = f"R{cust_letter}{service_letter}-{ref_id:08d}"
+    ref_number = f"ZEB-{cust_letter}{service_letter}-{ref_id:08d}"
 
 
 
