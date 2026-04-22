@@ -321,8 +321,8 @@ function addProduct() {
         </select>
 
         
-        <input type="text" name="problem[]" placeholder="Problem Description">
-        <input type="text" name="serial[]" placeholder="Serial Number">
+        <input type="text" name="problem[]" placeholder="Problem Description *" required>
+        <input type="text" name="serial[]" placeholder="Serial Number *" required>
 
         <select name="warranty[]" required>
             <option value="">SELECT WARRANTY *</option>
@@ -335,8 +335,8 @@ function addProduct() {
         <input type="date" name="date[]" required>
 
         <!-- ✅ NEW -->
-        <label name="l2" class="l2">Upload Invoice (Max 1MB (Images only))</label>
-        <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf">
+        <label name="l2" class="l2">Upload Invoice * (Max 1MB (Images only))</label>
+        <input type="file" name="invoice[]" class="invoice-file" accept="image/*,.pdf" required>
         <div class="error file-error"></div>
 
 
