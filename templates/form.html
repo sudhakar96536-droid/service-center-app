@@ -188,7 +188,7 @@
         <div class="error" id="customerTypeError"></div>
 
         <!-- MOBILE -->
-        <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number *" required>
+        <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number *" minlength="10" maxlength="10" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
 
         <!-- SEARCH -->
         <input type="tel" id="search_mobile" name="search_mobile" placeholder="Search By Mobile No" style="display:none;">
@@ -197,10 +197,10 @@
         <input type="text" name="name" id="name" placeholder="Customer Name *" style="text-transform: uppercase;" required>
 
         <!-- ADDRESS -->
-        <input type="text" id="address" name="address" placeholder="Address Line 1 *" required>
-        <input type="text" id="address1" name="address1" placeholder="Address Line 2 *" required>
-        <input type="text" id="city" name="city" placeholder="City *" required>
-        <input type="text" id="pincode" name="pincode" placeholder="Pincode *" required>
+        <input type="text" id="address" name="address" placeholder="Address Line 1 *" style="text-transform: uppercase;" required>
+        <input type="text" id="address1" name="address1" placeholder="Address Line 2 *" style="text-transform: uppercase;" required>
+        <input type="text" id="city" name="city" placeholder="City *" style="text-transform: uppercase;" required>
+        <input type="text" id="pincode" name="pincode" placeholder="Pincode *" minlength="6" maxlength="6" pattern="[0-9]{6}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
 
         <select name="state" id="state" required>
             <option value="">Select State *</option>
@@ -211,7 +211,7 @@
 
         <!-- EMAIL / GST -->
         <input type="email" id="email" name="email" placeholder="Email">
-        <input type="text" id="gstin" name="gstin" placeholder="GSTIN">
+        <input type="text" id="gstin" name="gstin" placeholder="GSTIN" style="text-transform: uppercase;">
 
         <!-- REMARKS -->
         <input type="text" name="remarks" placeholder="Remarks">
