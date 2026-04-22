@@ -520,7 +520,7 @@ Your service request has been received and is being processed.
 
     setTimeout(function() {{
         window.location.href = "/";
-    }}, 1500);
+    }}, 10000);
 </script>
 
 </body>
