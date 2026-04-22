@@ -497,10 +497,30 @@ def submit():
 </div>
 
 <script>
+    // ✅ Create text content
+    let content = `Complaint Registered Successfully
+
+Reference Number: {ref_number}
+
+Your service request has been received and is being processed.
+`;
+
+    // ✅ Create file
+    let blob = new Blob([content], { type: "text/plain" });
+
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Complaint_{ref_number}.txt";
+
+    // ✅ Auto download
+    link.click();
+
+    // ✅ Then redirect back
     sessionStorage.setItem("clearProducts", "true");
-    setTimeout(function() {{
+
+    setTimeout(function() {
         window.location.href = "/";
-    }}, 1500); // redirect after 1.5 sec
+    }, 10000);
 </script>
 
 </body>
