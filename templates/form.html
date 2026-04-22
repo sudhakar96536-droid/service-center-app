@@ -321,7 +321,13 @@ function addProduct() {
         </select>
 
         
-        <input type="text" name="problem[]" placeholder="Problem Description *" required>
+        <select name="problem[]" class="problem-select" required>
+            <option value="">Select Problem *</option>
+            {% for p in problems_list %}
+                <option value="{{p}}">{{p}}</option>
+            {% endfor %}
+        </select>
+        
         <input type="text" name="serial[]" placeholder="Serial Number *" required>
 
         <select name="warranty[]" required>
