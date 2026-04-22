@@ -85,7 +85,7 @@ def form():
         online_list = json.load(o)
 
     with open('problemstemp.json') as p:
-    problems_list = json.load(p)
+        problems_list = json.load(p)
 
     return render_template('form.html', products=products, states=states,branches=branches,online_list=online_list,problems_list=problems_list)
 
