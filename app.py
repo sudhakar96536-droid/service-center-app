@@ -84,7 +84,10 @@ def form():
     with open('online.json') as o:
         online_list = json.load(o)
 
-    return render_template('form.html', products=products, states=states,branches=branches,online_list=online_list)
+    with open('problemstemp.json') as p:
+    problems_list = json.load(p)
+
+    return render_template('form.html', products=products, states=states,branches=branches,online_list=online_list,problems_list=problems_list)
 
 @app.route("/get-customer")
 def get_customer():
