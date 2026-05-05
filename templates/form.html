@@ -233,17 +233,17 @@
 
         <div id="courierBox">
                              
-            <input type="text" name="courier_name" placeholder="Courier Name" style="text-transform: uppercase;">
-            <input type="text" name="docket_no" placeholder="Courier Docket No" style="text-transform: uppercase;">
-            <label>Docket Date</label>
-            <input type="date" name="docket_date" placeholder="Docket Date">
-            <input type="number" name="no_boxes" placeholder="No of Boxes">
-            <input type="number" name="no_items" placeholder="No of Items">
-            <lABEL>Weight in KGS only</lABEL>
-            <input type="text" name="weight" placeholder="Weight">
-            <input type="text" name="courier_remarks" placeholder="Courier Remarks" style="text-transform: uppercase;">
-            <label>Upload Packed Box Image (Max 1MB (Images only))</label>
-            <input type="file" name="courier_image" id="courier_image" accept="image/*">
+            <input type="text" name="courier_name" placeholder="Courier Name" style="display:none;">
+            <input type="text" name="docket_no" placeholder="Courier Docket No" style="display:none;">
+            <label style="display:none;">Docket Date</label>
+            <input type="date" name="docket_date" placeholder="Docket Date" style="display:none;">
+            <input type="number" name="no_boxes" placeholder="No of Boxes" style="display:none;">
+            <input type="number" name="no_items" placeholder="No of Items" style="display:none;">
+            <lABEL style="display:none;">Weight in KGS only</lABEL>
+            <input type="text" name="weight" placeholder="Weight" style="display:none;">
+            <input type="text" name="courier_remarks" placeholder="Courier Remarks" style="display:none;">
+            <label style="display:none;">Upload Packed Box Image (Max 1MB (Images only))</label>
+            <input type="file" name="courier_image" id="courier_image" accept="image/*" style="display:none;">
             <div class="error" id="courierFileError"></div>
             <select name="to_branch" id="to_branch">
                 <option value="">Select Branch</option>
