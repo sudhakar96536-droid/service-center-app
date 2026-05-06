@@ -165,6 +165,11 @@ label {
     gap: 8px;
     text-align: left;
 }
+
+input[type="checkbox"] {
+    width: auto;
+    margin-top: 3px; /* optional for better vertical alignment */
+}
     </style>
 </head>
 
@@ -255,7 +260,7 @@ label {
             <input type="date" name="docket_date" placeholder="Docket Date" style="display:none;">
             <input type="number" name="no_boxes" placeholder="No of Boxes" style="display:none;">
             <input type="number" name="no_items" placeholder="No of Items" style="display:none;">
-            <lABEL style="display:none;">Weight in KGS only</lABEL>
+            <label style="display:none;">Weight in KGS only</label>
             <input type="text" name="weight" placeholder="Weight" style="display:none;">
             <input type="text" name="courier_remarks" placeholder="Courier Remarks" style="display:none;">
             <label style="display:none;">Upload Packed Box Image (Max 1MB (Images only))</label>
