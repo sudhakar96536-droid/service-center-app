@@ -89,6 +89,13 @@ def form():
 
     return render_template('form.html', products=products, states=states,branches=branches,online_list=online_list,problems_list=problems_list)
 
+
+@app.route('/learn_more')
+def learn_more():
+    return render_template('learn_more.html')
+
+
+
 @app.route("/get-customer")
 def get_customer():
     mobile = request.args.get("mobile")
